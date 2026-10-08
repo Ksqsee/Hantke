@@ -1,102 +1,92 @@
 ---
+// Flat to-do list (Todoist / Numo pattern on Mobbin): round checkbox, title, one line, time on the right.
 import Icon from './Icon.astro';
 import { phones } from '../data/site';
 const steps = [
-  { when: 'Sofort', icon: 'tap', title: 'Wasser abstellen', text: 'Eckventil am Gerät, sonst Haupthahn.' },
-  { when: 'Sofort', icon: 'power', title: 'Strom sichern', text: 'Wasser an Steckdosen? Sicherung raus.' },
-  { when: 'Vor dem Aufräumen', icon: 'camera', title: 'Fotos machen', text: 'Für die Versicherung. Handy reicht.' },
-  { when: 'Erste Stunde', icon: 'bucket', title: 'Wasser aufnehmen', text: 'Aufwischen, Möbel hoch, Teppiche raus.' },
-  { when: 'Heute', icon: 'file', title: 'Versicherung melden', text: 'Schadennummer notieren. Dann uns anrufen.' },
+  { when: 'sofort', title: 'Wasser abstellen', text: 'Eckventil am Gerät, sonst Haupthahn.' },
+  { when: 'sofort', title: 'Strom sichern', text: 'Wasser an Steckdosen? Sicherung raus.' },
+  { when: 'vor dem Aufräumen', title: 'Fotos machen', text: 'Für die Versicherung. Handy reicht.' },
+  { when: 'erste Stunde', title: 'Wasser aufnehmen', text: 'Aufwischen, Möbel hoch, Teppiche raus.' },
+  { when: 'heute', title: 'Versicherung melden', text: 'Schadennummer notieren. Dann uns anrufen.' },
 ];
-const donts = [
-  { title: 'Heizung hochdrehen', text: 'Hilft nicht gegen Nässe im Boden. Fördert Schimmel.' },
-  { title: 'Boden selbst aufreißen', text: 'Oft lässt er sich durch Trocknung retten.' },
-  { title: 'Gleich überstreichen', text: 'Hält nicht und schließt die Feuchte ein.' },
-];
+const donts = ['Heizung hochdrehen', 'Boden selbst aufreißen', 'Gleich überstreichen'];
 ---
-<section class="section check" id="sofort">
-  <div class="wrap">
-    <div class="check__head">
-      <h2 class="h2" data-split>Jetzt sofort: <em>fünf Schritte.</em></h2>
-      <p class="lead" data-reveal>Abhaken, was erledigt ist.</p>
-    </div>
-    <div class="check__grid">
-      <div class="check__list" data-checklist>
-        <div class="check__meter" aria-live="polite">
-          <span class="mono"><span class="tnum" data-check-count>0</span> / {steps.length} erledigt</span>
-          <span class="check__bar"><span data-check-bar></span></span>
-        </div>
-        {steps.map((s, i) => (
-          <label class="citem" data-reveal style={`--d:${i * 0.06}s`}>
-            <input type="checkbox" data-check />
-            <span class="citem__box" aria-hidden="true"><Icon name="check" size={14} /></span>
-            <span class="citem__icon"><Icon name={s.icon} size={20} /></span>
-            <span class="citem__text">
-              <span class="mono citem__when">{String(i + 1).padStart(2, '0')} · {s.when}</span>
-              <span class="h4">{s.title}</span>
-              <span class="citem__desc">{s.text}</span>
-            </span>
-          </label>
-        ))}
-        <div class="check__done" data-check-done hidden>
-          <p class="h4">Gut gemacht. Jetzt übernehmen wir.</p>
-          <a href={phones.wasser.href} class="btn btn--accent"><Icon name="phone" class="btn__icon" /> {phones.wasser.display}</a>
-        </div>
+<section class="section todo" id="sofort">
+  <div class="wrap todo__grid">
+    <div class="todo__head">
+      <h2 class="h2" data-split>Jetzt <em>sofort.</em></h2>
+      <p class="lead" data-reveal>Fünf Dinge, bevor wir da sind.</p>
+      <div class="todo__dont" data-reveal>
+        <p class="todo__dont-title">Besser nicht:</p>
+        <ul>{donts.map((d) => <li><Icon name="x" size={16} />{d}</li>)}</ul>
       </div>
-      <aside class="check__dont" data-reveal>
-        <p class="check__dont-title"><Icon name="alert" size={16} /> Besser nicht</p>
-        {donts.map((d) => (
-          <div class="dont">
-            <p class="h4">{d.title}</p>
-            <p class="body">{d.text}</p>
-          </div>
+    </div>
+
+    <div class="todo__list" data-checklist data-reveal>
+      <p class="todo__count"><span class="tnum" data-check-count>0</span> von {steps.length} erledigt</p>
+      <ul>
+        {steps.map((s) => (
+          <li>
+            <label class="task">
+              <input type="checkbox" data-check />
+              <span class="task__box" aria-hidden="true"><Icon name="check" size={16} /></span>
+              <span class="task__body">
+                <span class="task__title">{s.title}</span>
+                <span class="task__text">{s.text}</span>
+              </span>
+              <span class="task__when">{s.when}</span>
+            </label>
+          </li>
         ))}
-      </aside>
+      </ul>
+      <a href={phones.wasser.href} class="btn btn--blue btn--lg todo__call" data-check-done hidden><Icon name="phone" class="btn__icon" /> Erledigt. Jetzt anrufen: {phones.wasser.display}</a>
     </div>
   </div>
 </section>
 
 <style>
-  .check__head { display: grid; gap: 20px; max-width: 900px; margin-bottom: clamp(40px, 6vw, 72px); }
-  .check__grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(20px, 4vw, 64px); align-items: start; }
-  .check__list { display: grid; gap: 8px; }
-  .check__meter { display: flex; align-items: center; gap: 16px; padding: 4px 0 12px; color: var(--muted); }
-  .check__meter .mono { white-space: nowrap; font-size: 0.75rem; }
-  .check__bar { flex: 1; height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
-  .check__bar span { display: block; height: 100%; width: 0; background: var(--blue); transition: width 0.6s var(--ease-out); }
-  .citem { position: relative; display: grid; grid-template-columns: 26px 44px 1fr; gap: 16px; align-items: start; padding: 20px; border-radius: 16px; background: #fff; border: 1px solid var(--line); cursor: pointer; transition: border-color 0.3s, background 0.3s; }
-  .citem:hover { border-color: var(--line-strong); }
-  .citem input { position: absolute; opacity: 0; }
-  .citem__box { width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--line-strong); display: grid; place-items: center; color: transparent; margin-top: 9px; transition: all 0.3s var(--ease-out); }
-  .citem input:checked ~ .citem__box { background: var(--blue); border-color: var(--blue); color: #fff; transform: scale(1.05); }
-  .citem input:focus-visible ~ .citem__box { outline: 2px solid var(--blue); outline-offset: 2px; }
-  .citem__icon { width: 44px; height: 44px; border-radius: 12px; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; }
-  .citem__text { display: grid; gap: 4px; }
-  .citem__when { color: var(--blue); font-size: 0.7rem; }
-  .citem__desc { color: var(--muted); font-size: 0.95rem; }
-  .citem:has(input:checked) { background: var(--blue-soft); }
-  .citem:has(input:checked) .h4 { text-decoration: line-through; text-decoration-color: rgba(24, 62, 235, 0.4); }
-  .check__done { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 20px; border-radius: 16px; background: var(--navy); color: #fff; animation: pop 0.6s var(--ease-out); }
-  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } }
-  .check__dont { position: sticky; top: calc(var(--nav-h) + 32px); padding: 28px; border-radius: 20px; background: var(--grey); }
-  .check__dont-title { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: #b45309; margin-bottom: 8px; }
-  .dont { padding: 18px 0; border-top: 1px solid var(--line); display: grid; gap: 6px; }
-  .dont:first-of-type { border-top: 0; }
-  .dont .body { font-size: 0.95rem; }
-  @media (max-width: 960px) { .check__grid { grid-template-columns: 1fr; } .check__dont { position: static; } }
-  @media (max-width: 520px) { .citem { grid-template-columns: 26px 1fr; } .citem__icon { display: none; } }
+  .todo__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 110px); align-items: start; }
+  .todo__head { display: grid; gap: 20px; position: sticky; top: calc(var(--nav-h) + 32px); }
+  .todo__dont { margin-top: 12px; }
+  .todo__dont-title { font-weight: 800; margin-bottom: 8px; }
+  .todo__dont li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-weight: 600; color: var(--ink-2); }
+  .todo__dont :global(svg) { color: #d4380d; stroke-width: 2.4; }
+  .todo__count { font-weight: 700; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+  .task { display: grid; grid-template-columns: 36px 1fr auto; gap: 18px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .task input { position: absolute; opacity: 0; pointer-events: none; }
+  .task__box { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; color: transparent; transition: background 0.2s, border-color 0.2s, transform 0.3s var(--ease-out); }
+  .task__box :global(svg) { stroke-width: 3; }
+  .task:hover .task__box { border-color: var(--blue); }
+  .task input:checked ~ .task__box { background: var(--blue); border-color: var(--blue); color: #fff; transform: scale(1.06); }
+  .task input:focus-visible ~ .task__box { outline: 2px solid var(--blue); outline-offset: 3px; }
+  .task__body { display: grid; gap: 2px; min-width: 0; }
+  .task__title { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; transition: color 0.2s; }
+  .task__text { color: var(--ink-2); }
+  .task__when { font-size: 0.9rem; font-weight: 650; color: var(--blue); white-space: nowrap; }
+  .task input:checked ~ .task__body .task__title { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 3px; }
+  .task input:checked ~ .task__body .task__text, .task input:checked ~ .task__when { color: var(--ink-3); }
+  .todo__call { margin-top: 24px; }
+  @media (max-width: 900px) {
+    .todo__grid { grid-template-columns: 1fr; }
+    .todo__head { position: static; }
+    .todo__dont { order: 3; }
+  }
+  @media (max-width: 520px) {
+    .task { grid-template-columns: 32px 1fr; gap: 14px; }
+    .task__box { width: 30px; height: 30px; }
+    .task__when { grid-column: 2; font-size: 0.82rem; }
+    .todo__call { width: 100%; white-space: normal; height: auto; padding: 16px 20px; }
+  }
 </style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-checklist]').forEach((list) => {
     const boxes = list.querySelectorAll<HTMLInputElement>('[data-check]');
     const count = list.querySelector<HTMLElement>('[data-check-count]')!;
-    const bar = list.querySelector<HTMLElement>('[data-check-bar]')!;
     const done = list.querySelector<HTMLElement>('[data-check-done]')!;
     list.addEventListener('change', () => {
       const n = Array.from(boxes).filter((b) => b.checked).length;
       count.textContent = String(n);
-      bar.style.width = `${(n / boxes.length) * 100}%`;
       done.hidden = n !== boxes.length;
     });
   });

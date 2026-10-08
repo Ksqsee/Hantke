@@ -101,22 +101,22 @@ ul, ol { padding: 0; list-style: none; }
 .h1, .display {
   font-weight: 800;
   font-size: var(--step-5);
-  line-height: 0.92;
+  line-height: 0.98;
   letter-spacing: -0.055em;
   text-wrap: balance;
-  hyphens: auto;
+  hyphens: manual;
   overflow-wrap: break-word;
 }
 .h2 {
-  hyphens: auto;
+  hyphens: manual;
   overflow-wrap: break-word;
   font-weight: 800;
   font-size: var(--step-4);
-  line-height: 0.98;
+  line-height: 1.04;
   letter-spacing: -0.045em;
   text-wrap: balance;
 }
-.h3 { hyphens: auto; overflow-wrap: break-word; font-weight: 700; font-size: var(--step-2); line-height: 1.1; letter-spacing: -0.025em; }
+.h3 { hyphens: manual; overflow-wrap: break-word; font-weight: 700; font-size: var(--step-2); line-height: 1.1; letter-spacing: -0.025em; }
 .h4 { font-weight: 700; font-size: var(--step-1); line-height: 1.25; letter-spacing: -0.015em; }
 .lead { font-size: var(--step-1); line-height: 1.45; color: var(--muted); max-width: 42ch; text-wrap: pretty; }
 .body { color: var(--muted); max-width: 60ch; text-wrap: pretty; }
@@ -132,15 +132,15 @@ ul, ol { padding: 0; list-style: none; }
   position: relative;
   font-style: normal;
   color: inherit;
-  padding: 0 0.1em 0.06em;
+  padding: 0 0.08em;
   margin: 0 -0.02em;
-  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 70% / 0% 100%;
+  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 68% / 0% 92%;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: background-size 0.9s var(--ease-in-out), color 0.4s 0.35s;
 }
 .is-painted em, .is-painted .paint, html:not(.js) .h1 em, html:not(.js) .h2 em {
-  background-size: 100% 100%;
+  background-size: 100% 92%;
   color: var(--hl-ink);
 }
 .hl-blue { --hl: var(--blue); --hl-ink: #fff; }
