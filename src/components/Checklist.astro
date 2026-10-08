@@ -2,24 +2,23 @@
 import Icon from './Icon.astro';
 import { phones } from '../data/site';
 const steps = [
-  { when: 'Sofort', icon: 'tap', title: 'Wasser abstellen', text: 'Eckventil am Gerät zudrehen, sonst den Haupthahn. Erst wenn nichts mehr nachläuft, lohnt sich alles Weitere.' },
-  { when: 'Sofort', icon: 'power', title: 'Strom sichern', text: 'Steht Wasser an Steckdosen, Leuchten oder am Verteiler: betroffenen Stromkreis abschalten. Im Zweifel den Hauptschalter.' },
-  { when: 'Erste Minuten', icon: 'camera', title: 'Fotos machen', text: 'Wasserstand, betroffene Räume, Schadensstelle. Bevor Sie aufräumen. Ohne Bilder wird die Regulierung zäh.' },
-  { when: 'Erste Stunde', icon: 'bucket', title: 'Wasser aufnehmen', text: 'Stehendes Wasser abziehen oder aufwischen, Möbel hochstellen, Teppiche und Kartons aus dem Raum.' },
-  { when: 'Am selben Tag', icon: 'file', title: 'Versicherung melden', text: 'Schaden melden und die Schadennummer notieren, bevor Geräte aufgestellt werden. Danach anrufen, dann sprechen wir direkt mit der Versicherung.' },
+  { when: 'Sofort', icon: 'tap', title: 'Wasser abstellen', text: 'Eckventil am Gerät, sonst Haupthahn.' },
+  { when: 'Sofort', icon: 'power', title: 'Strom sichern', text: 'Wasser an Steckdosen? Sicherung raus.' },
+  { when: 'Vor dem Aufräumen', icon: 'camera', title: 'Fotos machen', text: 'Für die Versicherung. Handy reicht.' },
+  { when: 'Erste Stunde', icon: 'bucket', title: 'Wasser aufnehmen', text: 'Aufwischen, Möbel hoch, Teppiche raus.' },
+  { when: 'Heute', icon: 'file', title: 'Versicherung melden', text: 'Schadennummer notieren. Dann uns anrufen.' },
 ];
 const donts = [
-  { title: 'Heizung aufdrehen und Fenster kippen', text: 'Gegen Feuchte im Bodenaufbau hilft das nicht. Warme, feuchte Luft an kalten Wänden begünstigt eher Schimmel.' },
-  { title: 'Beläge selbst aufreißen', text: 'Was einmal heraus ist, muss ersetzt werden. Oft lässt sich der Belag durch technische Trocknung erhalten.' },
-  { title: 'Neu streichen, solange es feucht ist', text: 'Farbe auf feuchtem Untergrund hält nicht und schließt die Feuchte ein. Erst messen, dann trocknen, dann malen.' },
+  { title: 'Heizung hochdrehen', text: 'Hilft nicht gegen Nässe im Boden. Fördert Schimmel.' },
+  { title: 'Boden selbst aufreißen', text: 'Oft lässt er sich durch Trocknung retten.' },
+  { title: 'Gleich überstreichen', text: 'Hält nicht und schließt die Feuchte ein.' },
 ];
 ---
 <section class="section check" id="sofort">
   <div class="wrap">
     <div class="check__head">
-      <p class="eyebrow" data-reveal>Sofortmaßnahmen</p>
-      <h2 class="h2" data-split>Was Sie in den ersten Stunden <em>selbst</em> tun können.</h2>
-      <p class="lead" data-reveal>Haken Sie ab, was erledigt ist. Diese Schritte kosten nichts, verkleinern den Schaden und helfen später bei der Versicherung.</p>
+      <h2 class="h2" data-split>Jetzt sofort: <em>fünf Schritte.</em></h2>
+      <p class="lead" data-reveal>Abhaken, was erledigt ist.</p>
     </div>
     <div class="check__grid">
       <div class="check__list" data-checklist>
@@ -45,7 +44,7 @@ const donts = [
         </div>
       </div>
       <aside class="check__dont" data-reveal>
-        <p class="mono check__dont-title"><Icon name="alert" size={14} /> Was Sie besser lassen</p>
+        <p class="check__dont-title"><Icon name="alert" size={16} /> Besser nicht</p>
         {donts.map((d) => (
           <div class="dont">
             <p class="h4">{d.title}</p>

@@ -81,14 +81,14 @@ const branchOf = (stepId: string) => (stepId.startsWith('wasser_') ? 'wasser' : 
           {s.kind === 'info' && (
             <div class="urgent">
               <ol class="urgent__list">
-                <li><span class="urgent__n">01</span><span><strong>Wasser abstellen.</strong> Eckventil am Gerät zudrehen, sonst den Haupthahn.</span></li>
-                <li><span class="urgent__n">02</span><span><strong>Strom sichern.</strong> Steht Wasser an Steckdosen oder Leuchten: Stromkreis abschalten.</span></li>
-                <li><span class="urgent__n">03</span><span><strong>Fotos machen</strong>, bevor Sie aufräumen. Das hilft später bei der Versicherung.</span></li>
+                <li><span class="urgent__n">1</span><span><strong>Wasser abstellen.</strong> Eckventil oder Haupthahn.</span></li>
+                <li><span class="urgent__n">2</span><span><strong>Strom sichern.</strong> Wasser an Steckdosen? Sicherung raus.</span></li>
+                <li><span class="urgent__n">3</span><span><strong>Anrufen.</strong> Wir sagen Ihnen, was jetzt zu tun ist.</span></li>
               </ol>
               <a href={phones.wasser.href} class="btn btn--accent btn--block btn--lg">
                 <Icon name="phone" class="btn__icon" /> Jetzt anrufen · <span class="tnum">{phones.wasser.display}</span>
               </a>
-              <button type="button" class="funnel__skip" data-next>Ist erledigt, weiter zum Formular <Icon name="arrow" size={14} /></button>
+              <button type="button" class="funnel__skip" data-next>Erledigt, weiter <Icon name="arrow" size={14} /></button>
             </div>
           )}
 
@@ -161,7 +161,7 @@ const branchOf = (stepId: string) => (stepId.startsWith('wasser_') ? 'wasser' : 
     <div class="fdone" data-done hidden>
       <div class="fdone__check"><Icon name="check" size={28} /></div>
       <p class="fstep__title" data-done-title>Danke. Ihre Anfrage ist da.</p>
-      <p class="fstep__help" data-done-text>Wir melden uns am selben Werktag, spätestens am nächsten.</p>
+      <p class="fstep__help" data-done-text>Wir melden uns am selben Werktag.</p>
       <div class="fdone__mail" data-mail-fallback hidden>
         <p class="fstep__help">Ihr E-Mail-Programm sollte sich geöffnet haben. Falls nicht:</p>
         <a class="btn btn--block" data-mail-link href="#">E-Mail öffnen <Icon name="mail" class="btn__icon" /></a>

@@ -6,8 +6,8 @@ interface Props { flow: 'start' | 'wasser' | 'maler'; image?: string; imageAlt?:
 const { flow, title, text } = Astro.props;
 const phone = flow === 'wasser' ? phones.wasser : phones.maler;
 const after = flow === 'wasser'
-  ? ['Wir rufen zurück und klären, ob ein Ortstermin nötig ist und was er kostet.', 'Vor Ort messen wir Wand, Estrich und Raumluft. Den Kostenrahmen bekommen Sie schriftlich, bevor ein Gerät aufgebaut wird.', 'Trocknung mit Protokoll, danach die Wiederherstellung durch dasselbe Team.']
-  : ['Sie bekommen eine Rückmeldung am selben Werktag, spätestens am nächsten.', 'Wenn nötig, schauen wir uns das Objekt vor Ort an und messen auf.', 'Sie bekommen ein schriftliches Angebot nach Positionen, bevor wir anfangen.'];
+  ? ['Wir rufen zurück.', 'Wir messen vor Ort.', 'Sie bekommen den Kostenrahmen schriftlich.']
+  : ['Wir melden uns am selben Werktag.', 'Wir schauen es uns an.', 'Sie bekommen ein festes Angebot.'];
 ---
 <section class:list={['cta', flow === 'wasser' ? 'cta--water on-dark' : 'cta--warm']} id="anfrage">
   <div class="wrap cta__grid">
@@ -22,7 +22,7 @@ const after = flow === 'wasser'
         </span>
       </a>
       <div class="cta__after" data-reveal>
-        <p class="cta__after-title">Was danach passiert</p>
+        <p class="cta__after-title">Danach:</p>
         <ol>
           {after.map((a, i) => <li><span class="cta__n tnum">{i + 1}</span><span>{a}</span></li>)}
         </ol>

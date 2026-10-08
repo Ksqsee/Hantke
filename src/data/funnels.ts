@@ -21,15 +21,15 @@ const wasserSteps: Step[] = [
     id: 'art',
     kind: 'single',
     title: 'Was ist passiert?',
-    help: 'Eine Antwort genügt — Details klären wir am Telefon.',
+    help: 'Eine Antwort reicht.',
     skipIfSet: true,
     options: [
       { value: 'Rohrbruch', label: 'Rohrbruch' },
       { value: 'Wasch-/Spülmaschine', label: 'Waschmaschine oder Spülmaschine' },
       { value: 'Undichte Leitung', label: 'Undichte Leitung' },
       { value: 'Hochwasser/Starkregen', label: 'Hochwasser oder Starkregen' },
-      { value: 'Feuchte Wand/Geruch', label: 'Feuchte Wand, Geruch oder Stockflecken' },
-      { value: 'Neubau/Estrich', label: 'Neubau — Estrich soll trocknen' },
+      { value: 'Feuchte Wand/Geruch', label: 'Feuchte Wand oder Geruch' },
+      { value: 'Neubau/Estrich', label: 'Neubau, Estrich soll trocknen' },
       { value: 'Unklar', label: 'Weiß ich nicht genau' },
     ],
   },
@@ -54,8 +54,8 @@ const wasserSteps: Step[] = [
   {
     id: 'versicherung',
     kind: 'single',
-    title: 'Ist der Schaden schon bei der Versicherung gemeldet?',
-    help: 'Bei Leitungswasser zahlt meist die Gebäude- oder Hausratversicherung.',
+    title: 'Schon bei der Versicherung gemeldet?',
+    help: 'Bei Leitungswasser zahlt sie meistens.',
     unless: { art: ['Neubau/Estrich'] },
     options: [
       { value: 'Gemeldet', label: 'Ja, ist gemeldet' },
@@ -63,15 +63,15 @@ const wasserSteps: Step[] = [
       { value: 'Unklar', label: 'Weiß nicht, ob versichert' },
     ],
     tipOn: {
-      'Noch nicht': 'Melden Sie den Schaden am besten noch heute und notieren Sie die Schadennummer. Danach können wir direkt mit der Versicherung sprechen.',
-      Unklar: 'Kein Problem. Das klären wir beim Ortstermin. Sie bekommen in jedem Fall Messprotokoll und Trocknungsbericht als Unterlage.',
+      'Noch nicht': 'Am besten heute noch melden und die Schadennummer notieren.',
+      Unklar: 'Kein Problem. Klären wir beim Termin.',
     },
   },
   {
     id: 'kontakt',
     kind: 'contact',
     title: 'Wohin dürfen wir zurückrufen?',
-    help: 'Nummer und Postleitzahl genügen. Den Rest klären wir am Telefon.',
+    help: 'Nummer reicht. Wir rufen zurück.',
   },
 ];
 
@@ -131,8 +131,8 @@ const malerSteps: Step[] = [
   {
     id: 'kontakt',
     kind: 'contact',
-    title: 'Fast geschafft. Wie erreichen wir Sie?',
-    help: 'Nur die Telefonnummer ist Pflicht. Fotos helfen am meisten.',
+    title: 'Wie erreichen wir Sie?',
+    help: 'Nur die Nummer ist Pflicht.',
   },
 ];
 
@@ -156,12 +156,12 @@ export const funnels: Record<string, Funnel> = {
         id: 'branch',
         kind: 'single',
         title: 'Was steht an?',
-        help: 'Vier kurze Fragen, dann melden wir uns.',
+        help: 'Vier Klicks. Dann rufen wir an.',
         options: [
-          { value: 'wasser', label: 'Wasser ist ausgetreten', hint: 'Rohrbruch, Leitung, Maschine', set: {} },
-          { value: 'wasser_feuchte', label: 'Feuchte Wand oder Geruch', hint: 'Stockflecken, kalter Boden', set: { branch: 'wasser', wasser_art: 'Feuchte Wand/Geruch' } },
-          { value: 'maler', label: 'Streichen, tapezieren, renovieren', hint: 'Innenräume', set: {} },
-          { value: 'maler_fassade', label: 'Fassade', hint: 'Anstrich und Schutz', set: { branch: 'maler', maler_leistung: 'Fassade' } },
+          { value: 'wasser', label: 'Wasser ist ausgetreten', set: {} },
+          { value: 'wasser_feuchte', label: 'Feuchte Wand oder Geruch', set: { branch: 'wasser', wasser_art: 'Feuchte Wand/Geruch' } },
+          { value: 'maler', label: 'Streichen und renovieren', set: {} },
+          { value: 'maler_fassade', label: 'Fassade', set: { branch: 'maler', maler_leistung: 'Fassade' } },
         ],
       },
       ...withBranch(wasserSteps, 'wasser'),

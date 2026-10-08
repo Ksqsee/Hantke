@@ -1,0 +1,46 @@
+---
+// Check vs. minus table. Pattern from Hers ("Online vs. In-person") on Mobbin.
+import Icon from './Icon.astro';
+interface Props { title: string; us: string; them: string; rows: string[] }
+const { title, us, them, rows } = Astro.props;
+---
+<section class="section ctable surface-grey">
+  <div class="wrap">
+    <h2 class="h2 ctable__title" data-split set:html={title} />
+    <div class="ctable__box" data-reveal>
+      <div class="ctable__row ctable__row--head">
+        <span></span>
+        <span class="ctable__us">{us}</span>
+        <span class="ctable__them">{them}</span>
+      </div>
+      {rows.map((r) => (
+        <div class="ctable__row">
+          <span class="ctable__label">{r}</span>
+          <span class="ctable__cell ctable__cell--yes" aria-label="Ja"><Icon name="check" size={18} /></span>
+          <span class="ctable__cell ctable__cell--no" aria-label="Nein"><Icon name="minus" size={18} /></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ctable__title { text-align: center; margin: 0 auto clamp(32px, 4vw, 56px); max-width: 16ch; }
+  .ctable__box { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 8px clamp(12px, 3vw, 32px); }
+  .ctable__row { display: grid; grid-template-columns: 1fr 120px 120px; align-items: center; gap: 12px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .ctable__row--head { border-top: 0; padding: 20px 0 14px; }
+  .ctable__us, .ctable__them { text-align: center; font-weight: 800; font-size: 0.98rem; }
+  .ctable__us { color: var(--hl-ink); background: var(--hl); border-radius: 999px; padding: 6px 0; }
+  .ctable__them { color: var(--ink-3); }
+  .ctable__label { font-size: var(--step-1); font-weight: 650; letter-spacing: -0.015em; }
+  .ctable__cell { justify-self: center; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; }
+  .ctable__cell :global(svg) { stroke-width: 2.6; }
+  .ctable__cell--yes { background: var(--ink); color: #fff; }
+  .world-water .ctable__cell--yes { background: var(--blue); }
+  .ctable__cell--no { background: var(--grey); color: var(--ink-3); }
+  @media (max-width: 600px) {
+    .ctable__row { grid-template-columns: 1fr 64px 64px; gap: 8px; }
+    .ctable__us, .ctable__them { font-size: 0.78rem; }
+    .ctable__label { font-size: 1rem; }
+  }
+</style>

@@ -61,6 +61,7 @@
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 24px); }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -103,15 +104,19 @@ ul, ol { padding: 0; list-style: none; }
   line-height: 0.92;
   letter-spacing: -0.055em;
   text-wrap: balance;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .h2 {
+  hyphens: auto;
+  overflow-wrap: break-word;
   font-weight: 800;
   font-size: var(--step-4);
   line-height: 0.98;
   letter-spacing: -0.045em;
   text-wrap: balance;
 }
-.h3 { font-weight: 700; font-size: var(--step-2); line-height: 1.1; letter-spacing: -0.025em; }
+.h3 { hyphens: auto; overflow-wrap: break-word; font-weight: 700; font-size: var(--step-2); line-height: 1.1; letter-spacing: -0.025em; }
 .h4 { font-weight: 700; font-size: var(--step-1); line-height: 1.25; letter-spacing: -0.015em; }
 .lead { font-size: var(--step-1); line-height: 1.45; color: var(--muted); max-width: 42ch; text-wrap: pretty; }
 .body { color: var(--muted); max-width: 60ch; text-wrap: pretty; }
@@ -127,42 +132,21 @@ ul, ol { padding: 0; list-style: none; }
   position: relative;
   font-style: normal;
   color: inherit;
-  padding: 0 0.1em;
+  padding: 0 0.1em 0.06em;
   margin: 0 -0.02em;
-  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 55% / 0% 88%;
+  background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 70% / 0% 100%;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: background-size 0.9s var(--ease-in-out), color 0.4s 0.35s;
 }
 .is-painted em, .is-painted .paint, html:not(.js) .h1 em, html:not(.js) .h2 em {
-  background-size: 100% 88%;
+  background-size: 100% 100%;
   color: var(--hl-ink);
 }
 .hl-blue { --hl: var(--blue); --hl-ink: #fff; }
 .hl-peach { --hl: var(--peach); --hl-ink: var(--ink); }
 .hl-black { --hl: var(--ink); --hl-ink: #fff; }
 .hl-white { --hl: #fff; --hl-ink: var(--ink); }
-em[data-tag]::after {
-  content: attr(data-tag);
-  position: absolute;
-  right: -0.15em;
-  bottom: -0.1em;
-  transform: translateY(70%) rotate(-4deg) scale(0.6);
-  transform-origin: right top;
-  font-size: max(13px, 0.16em);
-  letter-spacing: -0.01em;
-  line-height: 1;
-  font-weight: 750;
-  white-space: nowrap;
-  padding: 0.5em 0.75em;
-  background: var(--ink);
-  color: #fff;
-  border-radius: 999px;
-  opacity: 0;
-  transition: opacity 0.25s 0.8s, transform 0.6s 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.world-water em[data-tag]::after, .hl-blue em[data-tag]::after { background: var(--peach); color: var(--ink); }
-.is-painted em[data-tag]::after { opacity: 1; transform: translateY(70%) rotate(-4deg) scale(1); }
 
 /* ---------- Buttons ---------- */
 .btn {

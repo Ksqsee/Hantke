@@ -26,7 +26,7 @@ const c = credits.find((x) => x.file === name);
   {...rest}
 />
 {credit && c && (
-  <a class="credit" href={`/bildnachweise#${c.file}`} title={`${c.title} — ${c.author}, ${c.license}`}>
+  <a class="credit" href={`/bildnachweise#${c.file}`} title={`${c.author}, ${c.license}`}>
     Foto: {c.author} · {c.license}
   </a>
 )}

@@ -33,7 +33,7 @@ Die Funnels (`src/components/Funnel.astro`, Inhalte in `src/data/funnels.ts`) se
 ## Vor dem Livegang
 
 - [ ] `PUBLIC_FORM_ENDPOINT` setzen
-- [ ] Datenschutz: Hosting-Anbieter und Formular-Dienstleister eintragen (gelb markiert in `src/pages/datenschutz.astro`)
+- [ ] Datenschutz: Formular-Dienstleister eintragen (gelb markiert in `src/pages/datenschutz.astro`)
 - [ ] Platzhalter-Fotos (Wikimedia Commons, CC-Lizenzen, Nachweis unter `/bildnachweise`) durch echte Baustellenfotos ersetzen: `public/img/<name>-800.webp` und `-1600.webp`, Eintrag in `src/data/credits.json` entfernen
 - [ ] Google-Bewertungslink in `src/data/site.ts` auf das echte Profil setzen
 

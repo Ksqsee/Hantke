@@ -1,0 +1,31 @@
+---
+// Three steps, one line each. Pattern from Hers / Airtasker on Mobbin.
+import Icon from './Icon.astro';
+interface Props { title: string; steps: { icon: string; title: string; text: string }[] }
+const { title, steps } = Astro.props;
+---
+<section class="section steps">
+  <div class="wrap">
+    <h2 class="h2 steps__title" data-split set:html={title} />
+    <ol class="steps__grid">
+      {steps.map((s, i) => (
+        <li class="step" data-reveal style={`--d:${i * 0.08}s`}>
+          <span class="step__icon"><Icon name={s.icon} size={26} /></span>
+          <p class="h3">{s.title}</p>
+          <p class="body">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps__title { margin-bottom: clamp(32px, 4vw, 56px); max-width: 18ch; }
+  .steps__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 64px); }
+  .step { display: grid; gap: 12px; align-content: start; }
+  .step__icon { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; background: var(--hl); color: var(--hl-ink); margin-bottom: 8px; }
+  .step__icon :global(svg) { stroke-width: 1.9; }
+  .step:nth-child(2) .step__icon { background: var(--ink); color: #fff; }
+  .step:nth-child(3) .step__icon { background: var(--grey); color: var(--ink); }
+  @media (max-width: 800px) { .steps__grid { grid-template-columns: 1fr; } }
+</style>

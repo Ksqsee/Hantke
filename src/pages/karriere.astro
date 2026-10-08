@@ -9,13 +9,13 @@ const jobs = [
   {
     title: 'Maler und Lackierer (m/w/d)', meta: 'Vollzeit · Hamburg',
     tasks: ['Anstrich- und Tapezierarbeiten in Wohn- und Gewerberäumen', 'Spachteln, Glätten und Untergrundvorbereitung', 'Fassadenanstriche', 'Sauberes Abkleben und Abdecken, Baustelle besenrein übergeben'],
-    profile: ['Abgeschlossene Ausbildung als Maler und Lackierer oder mehrjährige Erfahrung', 'Sorgfalt und ein Auge für saubere Kanten', 'Freundlicher Umgang mit Kunden, wir arbeiten in bewohnten Wohnungen', 'Führerschein Klasse B von Vorteil'],
+    profile: ['Abgeschlossene Ausbildung als Maler und Lackierer oder mehrjährige Erfahrung', 'Sorgfalt und ein Auge für saubere Kanten', 'Freundlich zu Kunden', 'Führerschein Klasse B von Vorteil'],
     offer: ['Unbefristete Festanstellung', 'Werkzeug, Maschinen und Arbeitskleidung', 'Baustellen in Hamburg und Umland, keine Montage', 'Bezahlte Schulungen'],
   },
   {
     title: 'Ausbildung Maler und Lackierer (m/w/d)', meta: 'Ausbildungsstart nach Absprache',
     tasks: ['Sie lernen das Handwerk von Grund auf: Untergründe, Techniken, Materialien', 'Mitarbeit auf echten Baustellen vom ersten Jahr an', 'Begleitung durch einen festen Ansprechpartner im Betrieb'],
-    profile: ['Mindestens ein Erster allgemeinbildender Schulabschluss', 'Handwerkliches Interesse und Zuverlässigkeit', 'Pünktlichkeit. Das ist auf dem Bau die halbe Miete.'],
+    profile: ['Mindestens ein Erster allgemeinbildender Schulabschluss', 'Handwerkliches Interesse und Zuverlässigkeit', 'Pünktlichkeit'],
     offer: ['Ausbildungsvergütung nach Tarif', 'Übernahme bei guter Leistung', 'Prüfungsvorbereitung im Betrieb'],
   },
   {
@@ -26,20 +26,20 @@ const jobs = [
   },
 ];
 const why = [
-  { t: 'Feste Anstellung', d: 'Unbefristet, pünktliche Bezahlung, geregelte Arbeitszeiten. Keine Leiharbeit, keine Sub-Konstruktionen.' },
-  { t: 'Ordentliche Ausstattung', d: 'Werkzeug, Maschinen und Arbeitskleidung stellen wir. Wer sauber arbeiten soll, braucht Material, das mitmacht.' },
-  { t: 'Kurze Wege', d: 'Baustellen in Hamburg und im näheren Umland. Sie fahren abends nach Hause, nicht in eine Monteurunterkunft.' },
-  { t: 'Weiterbildung', d: 'Techniken, Materialien und Systeme ändern sich. Schulungen zahlen wir, die Zeit dafür ist Arbeitszeit.' },
+  { t: 'Fest angestellt', d: 'Unbefristet, pünktlich bezahlt. Keine Leiharbeit.' },
+  { t: 'Gutes Werkzeug', d: 'Maschinen und Kleidung stellen wir.' },
+  { t: 'Abends zu Hause', d: 'Baustellen in Hamburg. Keine Montage.' },
+  { t: 'Schulungen bezahlt', d: 'Und die Zeit dafür ist Arbeitszeit.' },
 ];
 const steps = [
-  { t: 'Bewerbung senden', d: 'Über das Formular unten. Zeugnisse sind willkommen, aber kein Muss.' },
-  { t: 'Rückmeldung', d: 'Wir melden uns auf jede Bewerbung. Auch wenn es gerade nicht passt.' },
-  { t: 'Kennenlernen im Betrieb', d: 'Kein Assessment, kein Fragebogen. Ein Gespräch bei uns.' },
-  { t: 'Probetag', d: 'Ein Tag auf einer echten Baustelle, bezahlt. Danach wissen beide Seiten, ob es passt.' },
+  { t: 'Bewerben', d: 'Ein paar Zeilen reichen.' },
+  { t: 'Rückmeldung', d: 'Auf jede Bewerbung.' },
+  { t: 'Gespräch', d: 'Bei uns im Betrieb. Kein Assessment.' },
+  { t: 'Probetag', d: 'Auf einer echten Baustelle. Bezahlt.' },
 ];
 ---
-<Base title="Karriere — Maler Hantke Hamburg" description="Maler und Lackierer (m/w/d), Ausbildung und Initiativbewerbung bei der Tomas Hantke Malermeister GmbH in Hamburg-Lokstedt. Feste Anstellung, kurze Wege, bezahlter Probetag.">
-  <PageHead eyebrow="Karriere" title="Handwerk, das <em>bleibt.</em>" lead="Wir suchen Leute, die sauber arbeiten. Und das auch nach dem dritten Raum noch tun.">
+<Base title="Karriere | Maler Hantke Hamburg" description="Maler und Lackierer (m/w/d), Ausbildung und Initiativbewerbung bei der Tomas Hantke Malermeister GmbH in Hamburg-Lokstedt. Feste Anstellung, kurze Wege, bezahlter Probetag.">
+  <PageHead eyebrow="Karriere" title="Maler gesucht. <em>Gute.</em>" lead="Für saubere Arbeit in Hamburg. Fest angestellt.">
     <a href="#bewerben" class="btn btn--lg phead-cta">Jetzt bewerben <Icon name="arrow" class="btn__icon btn__icon--arrow" /></a>
   </PageHead>
 
@@ -51,12 +51,11 @@ const steps = [
 
   <section class="section">
     <div class="wrap">
-      <h2 class="h2 k-h" data-split>Bei uns ist kein Tag wie der andere. Aber jeder endet mit einem Raum, der <em>fertig</em> ist.</h2>
+      <h2 class="h2 k-h" data-split>Was Sie <em>bekommen.</em></h2>
       <div class="why">
         {why.map((w, i) => (
           <div class="why__tile" data-reveal style={`--d:${i * 0.06}s`}>
-            <span class="why__n">{i + 1}</span>
-            <p class="h3">{w.t}</p>
+                        <p class="h3">{w.t}</p>
             <p class="body">{w.d}</p>
           </div>
         ))}
@@ -66,7 +65,7 @@ const steps = [
 
   <section class="section surface-grey" id="stellen">
     <div class="wrap">
-      <h2 class="h2 k-h" data-split>Was wir gerade <em>suchen.</em></h2>
+      <h2 class="h2 k-h" data-split>Offene <em>Stellen.</em></h2>
       <div class="jobs">
         {jobs.map((j, i) => (
           <details class="job" open={i === 0} name="jobs">
@@ -88,21 +87,21 @@ const steps = [
 
   <section class="section">
     <div class="wrap">
-      <h2 class="h2 k-h" data-split>Vier Schritte, keine <em>Warteschleife.</em></h2>
+      <h2 class="h2 k-h" data-split>So läuft's <em>ab.</em></h2>
       <ol class="ksteps">
         {steps.map((s, i) => (
           <li data-reveal style={`--d:${i * 0.06}s`}><span class="ksteps__n">{i + 1}</span><p class="h4">{s.t}</p><p class="body">{s.d}</p></li>
         ))}
       </ol>
-      <p class="k-note" data-reveal>Bewerbungen behandeln wir vertraulich. Ihr aktueller Arbeitgeber erfährt nichts von uns.</p>
+      <p class="k-note" data-reveal>Vertraulich. Ihr Arbeitgeber erfährt nichts.</p>
     </div>
   </section>
 
   <section class="section apply" id="bewerben">
     <div class="wrap apply__grid">
       <div class="apply__copy">
-        <h2 class="h1" data-split>Schreiben Sie uns ein paar <em>Zeilen.</em></h2>
-        <p class="lead">Kein Anschreiben nötig. Sagen Sie uns, was Sie können und wann Sie könnten. Den Rest klären wir im Gespräch.</p>
+        <h2 class="h1" data-split>Jetzt <em>bewerben.</em></h2>
+        <p class="lead">Kein Anschreiben nötig.</p>
         <a href={phones.maler.href} class="btn btn--lg"><Icon name="phone" class="btn__icon" /> {phones.maler.display}</a>
       </div>
       <form class="aform" data-apply data-endpoint={formEndpoint} data-email={company.email} novalidate>
@@ -131,7 +130,7 @@ const steps = [
   .k-media { aspect-ratio: 21 / 9; }
   .k-h { max-width: 20ch; margin-bottom: clamp(32px, 4vw, 56px); }
   .why { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .why__tile { padding: 24px; border-radius: 24px; background: var(--grey); display: grid; gap: 12px; align-content: start; min-height: 300px; }
+  .why__tile { padding: 24px; border-radius: 24px; background: var(--grey); display: grid; gap: 8px; align-content: end; min-height: 220px; }
   .why__tile:nth-child(1) { background: var(--peach); }
   .why__tile:nth-child(3) { background: var(--ink); color: #fff; --muted: rgba(255,255,255,.72); }
   .why__n { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); font-weight: 800; margin-bottom: 40px; }

@@ -2,164 +2,60 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Checklist from '../components/Checklist.astro';
-import SelfTest from '../components/SelfTest.astro';
+import Steps from '../components/Steps.astro';
 import MoistureChart from '../components/MoistureChart.astro';
-import Methods from '../components/Methods.astro';
-import ValueGrid from '../components/ValueGrid.astro';
-import Compare from '../components/Compare.astro';
-import Process from '../components/Process.astro';
+import CompareTable from '../components/CompareTable.astro';
 import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
 import CtaFinal from '../components/CtaFinal.astro';
-import Img from '../components/Img.astro';
 import Icon from '../components/Icon.astro';
 import { phones } from '../data/site';
-import { wasserProcess, wasserFaq } from '../data/content';
-
-const facts = [
-  { k: 'Erreichbar', v: 'Werktags', t: 'Auf jede Anfrage gibt es eine Rückmeldung.' },
-  { k: 'Vor Ort', v: 'Feuchtemessung', t: 'An Wand, Estrich und Dämmschicht.' },
-  { k: 'Für die Versicherung', v: 'Messprotokoll', t: 'Datierte Werte über die gesamte Laufzeit.' },
-  { k: 'Danach', v: 'Wiederherstellung', t: 'Spachteln, grundieren, streichen. Selber Betrieb.' },
-];
-const insurance = [
-  { t: 'Schadenmeldung mit Datum und Ursache', d: 'Wann der Schaden aufgetreten ist und wodurch. Am besten am selben Tag melden, bevor Geräte aufgestellt werden.' },
-  { t: 'Fotos vom Ausgangszustand', d: 'Der Zustand vor dem Aufräumen ist später nicht mehr herstellbar. Ein paar Handybilder reichen.' },
-  { t: 'Messprotokoll mit datierten Werten', d: 'Der Nachweis, dass getrocknet werden musste und wie lange. Ohne Protokoll wird über die Laufzeit diskutiert.' },
-  { t: 'Rechnung nach Positionen', d: 'Geräte, Laufzeit, Strom und Wiederherstellung getrennt ausgewiesen, damit die Versicherung prüfen kann statt zu kürzen.' },
-];
+import { wasserSteps, wasserFaq } from '../data/content';
 ---
 <Base
-  title="Wasserschaden Hamburg — Hantke Bautrocknung | Trocknung & Wiederherstellung"
-  description="Wasserschaden in Hamburg? Technische Trocknung mit Messprotokoll für die Versicherung und die malermäßige Wiederherstellung aus einem Meisterbetrieb. Jetzt anrufen: 0178 357 00 38."
+  title="Wasserschaden Hamburg | Hantke Bautrocknung"
+  description="Wasserschaden in Hamburg? Wir messen, trocknen und richten die Wand selbst wieder her. Mit Messprotokoll für die Versicherung. Anrufen: 0178 357 00 38."
   world="water"
-  overHero
 >
   <Hero
     image="regenfront"
     imageAlt="Dunkle Regenfront über den Dächern von Hamburg"
     position="65% 50%"
-    eyebrow="Hantke Bautrocknung · Wasserschaden Hamburg"
-    title="Erst Wasser abstellen. Dann <em data-tag='0178 357 00 38'>anrufen.</em>"
-    lead="Rohrbruch, undichte Leitung, übergelaufene Maschine: Je früher gemessen und getrocknet wird, desto kleiner bleibt der Schaden. Wir messen vor Ort, trocknen mit eigenen Geräten und stellen die Fläche danach selbst wieder her."
+    title="Wasser&shy;schaden? <em>Wir kommen.</em>"
+    lead="Erst Haupthahn zu. Dann anrufen. Wir messen, trocknen und richten alles wieder her."
     flow="wasser"
-    proof={['Werktags erreichbar', 'Messprotokoll für die Versicherung', 'Eigene Geräte, keine Mietgeräte', 'Leckortung ohne Fremdfirma']}
+    proof="5,0 auf Google · Meister seit 2002"
   >
-    <div slot="actions" class="hero-actions" data-reveal style="--d:.6s">
+    <div slot="actions" data-reveal style="--d:.2s">
       <a href={phones.wasser.href} class="btn btn--blue btn--lg"><Icon name="phone" class="btn__icon" /> <span class="tnum">{phones.wasser.display}</span></a>
-      <a href="#sofort" class="btn btn--ghost btn--lg">Was ich jetzt tun kann</a>
     </div>
   </Hero>
 
-  <section class="facts">
-    <div class="wrap facts__grid">
-      {facts.map((f, i) => (
-        <div class="fact" data-reveal style={`--d:${i * 0.06}s`}>
-          <p class="fact__k">{f.k}</p>
-          <p class="h3 fact__v">{f.v}</p>
-          <p class="fact__t">{f.t}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
   <Checklist />
 
-  <SelfTest />
+  <Steps title="Messen. Trocknen. <em>Fertig.</em>" steps={wasserSteps} />
 
   <section class="section measure">
     <div class="wrap measure__grid">
       <div class="measure__copy">
-        <p class="eyebrow" data-reveal>Messung</p>
-        <h2 class="h2" data-split>Trocken ist es, wenn die <em>Messung</em> es sagt.</h2>
-        <p class="body" data-reveal>Nicht nach Gefühl, nicht nach Kalender. Wir messen beim Aufbau, kontrollieren alle zwei bis drei Tage und bauen erst ab, wenn der Grenzwert unterschritten ist. Jeder Wert landet im Protokoll, das Sie für die Versicherung bekommen.</p>
-        <figure class="measure__media media" data-reveal>
-          <Img name="elbe-hochwassermarke" alt="Hochwassermarke der Sturmflut von 1916 an einer Mauer in Hamburg-Blankenese" sizes="(max-width: 900px) 100vw, 40vw" />
-        </figure>
-        <p class="measure__cap">Hamburg misst Wasser seit Jahrhunderten. Wir auch.</p>
+        <h2 class="h2" data-split>Gemessen, nicht <em>geschätzt.</em></h2>
+        <p class="lead" data-reveal>Abgebaut wird erst, wenn der Messwert stimmt. Jeder Wert steht im Protokoll für Ihre Versicherung.</p>
       </div>
-      <div class="measure__chart" data-reveal>
-        <MoistureChart />
-      </div>
+      <div data-reveal><MoistureChart /></div>
     </div>
   </section>
 
-  <Methods />
-
-  <ValueGrid world="water" />
-
-  <Compare
-    eyebrow="Der Unterschied"
-    title="Reine Trocknungsfirmen hören auf, wo wir <em>weitermachen.</em>"
-    intro="Nach der Trocknung kommen Putz, Spachtel, Anstrich und Tapete. Das ist der Teil, den reine Trocknungsfirmen abgeben müssen. Bei uns ist es das Stammgeschäft."
-    before={{ label: 'Reine Trocknungsfirma', items: ['Misst, trocknet, baut ab', 'Für Wand und Boden brauchen Sie danach einen Maler', 'Zweiter Termin, zweites Angebot, zweite Rechnung', 'Wer ist zuständig, wenn die Farbe nicht hält?'] }}
-    after={{ label: 'Hantke Bautrocknung', items: ['Messen, trocknen, protokollieren', 'Spachteln, grundieren, streichen: dasselbe Team', 'Ein Ansprechpartner statt drei Gewerken', 'Ein Betrieb, der für das Ergebnis geradesteht'] }}
-  />
-
-  <Process eyebrow="Ablauf" title="Vom Anruf bis zur <em>Freigabe.</em>" intro="Trocknungsdauer: ein bis drei Wochen bei Oberflächentrocknung, je nach Aufbau." steps={wasserProcess} note="Kostenrahmen schriftlich, bevor ein Gerät steht" />
-
-  <section class="section insurance surface-paper-2">
-    <div class="wrap insurance__grid">
-      <div class="insurance__copy">
-        <p class="eyebrow" data-reveal>Versicherung</p>
-        <h2 class="h2" data-split>Was die <em>Versicherung</em> am Ende sehen will.</h2>
-        <p class="body" data-reveal>Bei einem Leitungswasserschaden zahlt in der Regel die Gebäude- oder Hausratversicherung. Ob es reibungslos läuft, entscheidet die Dokumentation, nicht die Höhe des Schadens.</p>
-        <div class="insurance__us" data-reveal>
-          <Icon name="file" size={22} />
-          <p><strong>Von uns:</strong> Messprotokoll und Trocknungsbericht über die gesamte Laufzeit. Wie abgerechnet wird, klären wir beim Ortstermin.</p>
-        </div>
-      </div>
-      <ol class="insurance__list">
-        {insurance.map((x, i) => (
-          <li data-reveal style={`--d:${i * 0.06}s`}>
-            <span class="mono tnum">{String(i + 1).padStart(2, '0')}</span>
-            <div><p class="h4">{x.t}</p><p class="body">{x.d}</p></div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+  <CompareTable title="Trocknen <em>und</em> herrichten." us="Hantke" them="Nur Trocknung" rows={['Messen und trocknen', 'Spachteln und streichen danach', 'Ein Ansprechpartner', 'Protokoll und Rechnung nach Positionen', 'Leckortung ohne Fremdfirma']} />
 
   <Reviews />
 
-  <Faq title="Was am Telefon zuerst <em>gefragt</em> wird." intro="Bei akutem Wasseraustritt bitte nicht schreiben, sondern anrufen." items={wasserFaq} />
+  <Faq title="Kurz <em>gefragt.</em>" items={wasserFaq} />
 
-  <CtaFinal
-    flow="wasser"
-    title="Nass ist ein <em>Zeitproblem.</em>"
-    text="Je früher gemessen wird, desto kleiner bleibt der Schaden. Nummer und was passiert ist genügen."
-  />
+  <CtaFinal flow="wasser" title="Nass ist ein <em>Zeitproblem.</em>" text="Nummer und was passiert ist. Wir rufen zurück." />
 </Base>
 
 <style>
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-
-  .facts { padding: clamp(40px, 5vw, 72px) 0 0; }
-  .facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .fact { padding: 24px; border-radius: 22px; background: var(--blue); color: #fff; display: grid; gap: 6px; align-content: start; min-height: 190px; }
-  .fact:nth-child(2) { background: var(--navy); }
-  .fact:nth-child(3) { background: var(--peach); color: var(--ink); }
-  .fact:nth-child(3) .fact__k, .fact:nth-child(3) .fact__t { color: rgba(0,0,0,.7); }
-  .fact:nth-child(4) { background: var(--ink); }
-  
-  .fact__k { font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,.75); }
-  .fact__t { color: rgba(255, 255, 255, 0.75); font-size: 0.95rem; margin-top: auto; }
-  .measure__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .measure__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
   .measure__copy { display: grid; gap: 22px; }
-  .measure__media { aspect-ratio: 3 / 2; margin-top: 12px; }
-  .measure__cap { font-weight: 650; font-size: 0.9rem; }
-  .measure__chart { position: sticky; top: calc(var(--nav-h) + 32px); }
-  .insurance__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); }
-  .insurance__copy { display: grid; gap: 22px; align-content: start; }
-  .insurance__us { display: flex; gap: 14px; padding: 22px; border-radius: 20px; background: var(--blue); color: #fff; }
-  .insurance__us :global(svg) { flex: none; margin-top: 2px; }
-  .insurance__list { display: grid; gap: 8px; }
-  .insurance__list li { display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 22px; border-radius: 20px; background: #fff; }
-  .insurance__list .mono { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--blue-soft); color: var(--blue); font-weight: 800; }
-  .insurance__list .h4 { margin-bottom: 6px; }
-  @media (max-width: 960px) {
-    .facts__grid { grid-template-columns: 1fr 1fr; }
-    .measure__grid, .insurance__grid { grid-template-columns: 1fr; }
-    .measure__chart { position: static; }
-  }
+  @media (max-width: 960px) { .measure__grid { grid-template-columns: 1fr; } }
 </style>

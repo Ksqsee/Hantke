@@ -12,7 +12,7 @@ const limit = 25;
 <div class="mchart" data-mchart data-points={JSON.stringify(pts)} data-days={days}>
   <div class="mchart__top">
     <div>
-      <p class="mono mchart__label">Dämmschicht · relative Feuchte</p>
+      <p class="mchart__label">Feuchte im Boden</p>
       <p class="mchart__value"><span class="tnum" data-mc-val>78</span><span class="mchart__unit">% rF</span></p>
     </div>
     <div class="mchart__meta mono">
@@ -51,7 +51,7 @@ const limit = 25;
       <circle r="6" cx="0" cy="0" data-mc-knob />
     </g>
   </svg>
-  <p class="mono mchart__foot">Beispielverlauf. Gemessen wird alle zwei bis drei Tage, jeder Wert landet im Protokoll. Abgebaut wird erst, wenn die Kontrollmessung den Grenzwert unterschreitet.</p>
+  <p class="mchart__foot">Beispielverlauf. Gemessen alle zwei bis drei Tage.</p>
 </div>
 
 <style>
