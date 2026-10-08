@@ -19,6 +19,7 @@ B2C-Website für die Tomas Hantke Malermeister GmbH (Malerei + Hantke Bautrocknu
 npm install
 npm run dev      # http://localhost:4321
 npm run build    # -> dist/
+npm run deploy   # build + wrangler deploy (Cloudflare Worker "hantke-website", static assets)
 ```
 
 ## Seiten

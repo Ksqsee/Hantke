@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { phones } from '../data/site';
+---
+<Base title="Seite nicht gefunden — Maler Hantke" description="Diese Seite gibt es nicht." noindex>
+  <PageHead eyebrow="404" title="Hier ist nichts. <em>Noch</em> nicht gestrichen." lead="Die Seite gibt es nicht oder nicht mehr.">
+    <div class="nf">
+      <a href="/" class="btn btn--lg">Zur Startseite <Icon name="arrow" class="btn__icon btn__icon--arrow" /></a>
+      <a href={phones.wasser.href} class="btn btn--blue btn--lg"><Icon name="phone" class="btn__icon" /> Wasserschaden: {phones.wasser.display}</a>
+    </div>
+  </PageHead>
+</Base>
+<style>.nf { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; padding-bottom: 80px; }</style>
