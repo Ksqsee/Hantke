@@ -1,0 +1,208 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import { company, phones, formEndpoint } from '../data/site';
+
+const jobs = [
+  {
+    title: 'Maler und Lackierer (m/w/d)', meta: 'Vollzeit · Hamburg',
+    tasks: ['Anstrich- und Tapezierarbeiten in Wohn- und Gewerberäumen', 'Spachteln, Glätten und Untergrundvorbereitung', 'Fassadenanstriche', 'Sauberes Abkleben und Abdecken, Baustelle besenrein übergeben'],
+    profile: ['Abgeschlossene Ausbildung als Maler und Lackierer oder mehrjährige Erfahrung', 'Sorgfalt und ein Auge für saubere Kanten', 'Freundlicher Umgang mit Kunden, wir arbeiten in bewohnten Wohnungen', 'Führerschein Klasse B von Vorteil'],
+    offer: ['Unbefristete Festanstellung', 'Werkzeug, Maschinen und Arbeitskleidung', 'Baustellen in Hamburg und Umland, keine Montage', 'Bezahlte Schulungen'],
+  },
+  {
+    title: 'Ausbildung Maler und Lackierer (m/w/d)', meta: 'Ausbildungsstart nach Absprache',
+    tasks: ['Sie lernen das Handwerk von Grund auf: Untergründe, Techniken, Materialien', 'Mitarbeit auf echten Baustellen vom ersten Jahr an', 'Begleitung durch einen festen Ansprechpartner im Betrieb'],
+    profile: ['Mindestens ein Erster allgemeinbildender Schulabschluss', 'Handwerkliches Interesse und Zuverlässigkeit', 'Pünktlichkeit. Das ist auf dem Bau die halbe Miete.'],
+    offer: ['Ausbildungsvergütung nach Tarif', 'Übernahme bei guter Leistung', 'Prüfungsvorbereitung im Betrieb'],
+  },
+  {
+    title: 'Initiativbewerbung', meta: 'jederzeit',
+    tasks: ['Erfahrung im Malerhandwerk oder einem angrenzenden Gewerk'],
+    profile: ['Lust, sauber und selbständig zu arbeiten'],
+    offer: ['Ein ehrliches Gespräch über das, was möglich ist', 'Rückmeldung auf jede Bewerbung'],
+  },
+];
+const why = [
+  { t: 'Feste Anstellung', d: 'Unbefristet, pünktliche Bezahlung, geregelte Arbeitszeiten. Keine Leiharbeit, keine Sub-Konstruktionen.' },
+  { t: 'Ordentliche Ausstattung', d: 'Werkzeug, Maschinen und Arbeitskleidung stellen wir. Wer sauber arbeiten soll, braucht Material, das mitmacht.' },
+  { t: 'Kurze Wege', d: 'Baustellen in Hamburg und im näheren Umland. Sie fahren abends nach Hause, nicht in eine Monteurunterkunft.' },
+  { t: 'Weiterbildung', d: 'Techniken, Materialien und Systeme ändern sich. Schulungen zahlen wir, die Zeit dafür ist Arbeitszeit.' },
+];
+const steps = [
+  { t: 'Bewerbung senden', d: 'Über das Formular unten. Zeugnisse sind willkommen, aber kein Muss.' },
+  { t: 'Rückmeldung', d: 'Wir melden uns auf jede Bewerbung. Auch wenn es gerade nicht passt.' },
+  { t: 'Kennenlernen im Betrieb', d: 'Kein Assessment, kein Fragebogen. Ein Gespräch bei uns.' },
+  { t: 'Probetag', d: 'Ein Tag auf einer echten Baustelle, bezahlt. Danach wissen beide Seiten, ob es passt.' },
+];
+---
+<Base title="Karriere — Maler Hantke Hamburg" description="Maler und Lackierer (m/w/d), Ausbildung und Initiativbewerbung bei der Tomas Hantke Malermeister GmbH in Hamburg-Lokstedt. Feste Anstellung, kurze Wege, bezahlter Probetag.">
+  <PageHead eyebrow="Karriere" title="Handwerk, das <em>bleibt.</em>" lead="Wir suchen Leute, die sauber arbeiten. Und das auch nach dem dritten Raum noch tun.">
+    <a href="#bewerben" class="btn btn--lg phead-cta">Jetzt bewerben <Icon name="arrow" class="btn__icon btn__icon--arrow" /></a>
+  </PageHead>
+
+  <section class="wrap">
+    <div class="k-media media media--parallax" data-parallax="8" data-reveal="fade">
+      <Img name="kleine-alster" alt="Kleine Alster und Alsterarkaden in Hamburg" sizes="100vw" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h2 k-h" data-split>Bei uns ist kein Tag wie der andere. Aber jeder endet mit einem Raum, der <em>fertig</em> ist.</h2>
+      <div class="why">
+        {why.map((w, i) => (
+          <div class="why__tile" data-reveal style={`--d:${i * 0.06}s`}>
+            <span class="why__n">{i + 1}</span>
+            <p class="h3">{w.t}</p>
+            <p class="body">{w.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-grey" id="stellen">
+    <div class="wrap">
+      <h2 class="h2 k-h" data-split>Was wir gerade <em>suchen.</em></h2>
+      <div class="jobs">
+        {jobs.map((j, i) => (
+          <details class="job" open={i === 0} name="jobs">
+            <summary>
+              <span class="job__n tnum">{String(i + 1).padStart(2, '0')}</span>
+              <span class="job__t">{j.title}<span class="job__m">{j.meta}</span></span>
+              <span class="job__icon" aria-hidden="true"><Icon name="plus" size={18} /></span>
+            </summary>
+            <div class="job__body">
+              <div><p class="h4">Aufgaben</p><ul>{j.tasks.map((t) => <li>{t}</li>)}</ul></div>
+              <div><p class="h4">Das bringen Sie mit</p><ul>{j.profile.map((t) => <li>{t}</li>)}</ul></div>
+              <div><p class="h4">Das bieten wir</p><ul>{j.offer.map((t) => <li>{t}</li>)}</ul></div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h2 k-h" data-split>Vier Schritte, keine <em>Warteschleife.</em></h2>
+      <ol class="ksteps">
+        {steps.map((s, i) => (
+          <li data-reveal style={`--d:${i * 0.06}s`}><span class="ksteps__n">{i + 1}</span><p class="h4">{s.t}</p><p class="body">{s.d}</p></li>
+        ))}
+      </ol>
+      <p class="k-note" data-reveal>Bewerbungen behandeln wir vertraulich. Ihr aktueller Arbeitgeber erfährt nichts von uns.</p>
+    </div>
+  </section>
+
+  <section class="section apply" id="bewerben">
+    <div class="wrap apply__grid">
+      <div class="apply__copy">
+        <h2 class="h1" data-split>Schreiben Sie uns ein paar <em>Zeilen.</em></h2>
+        <p class="lead">Kein Anschreiben nötig. Sagen Sie uns, was Sie können und wann Sie könnten. Den Rest klären wir im Gespräch.</p>
+        <a href={phones.maler.href} class="btn btn--lg"><Icon name="phone" class="btn__icon" /> {phones.maler.display}</a>
+      </div>
+      <form class="aform" data-apply data-endpoint={formEndpoint} data-email={company.email} novalidate>
+        <fieldset class="aform__jobs">
+          <legend class="h4">Worauf bewerben Sie sich?</legend>
+          {jobs.map((j, i) => (
+            <label class="achip"><input type="radio" name="Stelle" value={j.title} checked={i === 0} /><span>{j.title.replace(' (m/w/d)', '')}</span></label>
+          ))}
+        </fieldset>
+        <label class="afield"><span>Name</span><input name="Name" autocomplete="name" /></label>
+        <label class="afield"><span>Telefon *</span><input name="Telefon" type="tel" autocomplete="tel" required /></label>
+        <label class="afield afield--full"><span>E-Mail</span><input name="E-Mail" type="email" autocomplete="email" /></label>
+        <label class="afield afield--full"><span>Ein paar Zeilen zu Ihnen</span><textarea name="Nachricht" rows="4"></textarea></label>
+        <label class="afield afield--full"><span>Zeugnisse oder Lebenslauf (optional)</span><input type="file" name="Unterlagen" multiple accept="application/pdf,image/*" /></label>
+        <label class="aconsent afield--full"><input type="checkbox" required /> <span>Ich bin einverstanden, dass meine Bewerbungsdaten gemäß der <a class="link" href="/datenschutz">Datenschutzerklärung</a> zur Bearbeitung gespeichert werden.</span></label>
+        <p class="aerr afield--full" data-apply-err hidden>Bitte Telefonnummer angeben und der Verarbeitung zustimmen.</p>
+        <button class="btn btn--lg btn--block afield--full" type="submit">Bewerbung senden <Icon name="arrow" class="btn__icon btn__icon--arrow" /></button>
+        <p class="aok afield--full" data-apply-ok hidden>Danke. Wir melden uns, versprochen.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .phead-cta { margin-top: 32px; }
+  .k-media { aspect-ratio: 21 / 9; }
+  .k-h { max-width: 20ch; margin-bottom: clamp(32px, 4vw, 56px); }
+  .why { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .why__tile { padding: 24px; border-radius: 24px; background: var(--grey); display: grid; gap: 12px; align-content: start; min-height: 300px; }
+  .why__tile:nth-child(1) { background: var(--peach); }
+  .why__tile:nth-child(3) { background: var(--ink); color: #fff; --muted: rgba(255,255,255,.72); }
+  .why__n { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); font-weight: 800; margin-bottom: 40px; }
+  .jobs { display: grid; gap: 8px; }
+  .job { background: #fff; border-radius: 22px; }
+  .job summary { list-style: none; display: grid; grid-template-columns: 56px 1fr 44px; gap: 16px; align-items: center; padding: 24px; cursor: pointer; }
+  .job summary::-webkit-details-marker { display: none; }
+  .job__n { font-weight: 800; color: var(--ink-3); }
+  .job__t { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.035em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+  .job__m { font-size: 0.95rem; font-weight: 600; color: var(--ink-2); letter-spacing: 0; }
+  .job__icon { width: 44px; height: 44px; border-radius: 50%; background: var(--peach); display: grid; place-items: center; transition: transform 0.4s var(--ease-out); }
+  .job[open] .job__icon { transform: rotate(45deg); background: var(--ink); color: #fff; }
+  .job__body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 0 24px 28px 96px; }
+  .job__body ul { margin-top: 10px; display: grid; gap: 8px; }
+  .job__body li { padding-left: 18px; position: relative; color: var(--ink-2); }
+  .job__body li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 8px; height: 8px; border-radius: 50%; background: var(--peach); }
+  .ksteps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .ksteps li { padding: 24px; border-radius: 24px; border: 2px solid var(--ink); display: grid; gap: 10px; align-content: start; }
+  .ksteps__n { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 800; margin-bottom: 24px; }
+  .k-note { margin-top: 24px; font-weight: 650; }
+  .apply { background: var(--peach); --hl: var(--ink); --hl-ink: #fff; --muted: rgba(0,0,0,.72); }
+  .apply__grid { display: grid; grid-template-columns: 1fr minmax(0, 560px); gap: clamp(32px, 6vw, 110px); align-items: start; }
+  .apply__copy { display: grid; gap: 24px; }
+  .apply__copy .lead { color: var(--ink); }
+  .apply__copy .btn { width: fit-content; }
+  .aform { background: #fff; border: 2px solid var(--ink); border-radius: 22px; padding: clamp(20px, 2.4vw, 30px); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .aform__jobs { grid-column: 1 / -1; border: 0; padding: 0; margin: 0 0 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .aform__jobs legend { margin-bottom: 10px; }
+  .achip { position: relative; cursor: pointer; }
+  .achip input { position: absolute; opacity: 0; }
+  .achip span { display: inline-block; padding: 9px 14px; border-radius: 999px; background: var(--grey); font-weight: 650; font-size: 0.92rem; transition: background 0.2s; }
+  .achip input:checked + span { background: var(--ink); color: #fff; }
+  .achip input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .afield { display: grid; gap: 6px; font-size: 0.85rem; font-weight: 650; }
+  .afield--full { grid-column: 1 / -1; }
+  .afield input, .afield textarea { border: 0; border-radius: 12px; background: var(--grey); padding: 14px; font-size: 1rem; font-weight: 400; }
+  .afield input:focus, .afield textarea:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 2px var(--ink); }
+  .afield input[type='file'] { padding: 12px; }
+  .aconsent { display: flex; gap: 10px; font-size: 0.85rem; color: var(--ink-2); align-items: flex-start; }
+  .aconsent input { margin-top: 3px; accent-color: var(--ink); width: 18px; height: 18px; }
+  .aerr { color: #d4380d; font-weight: 650; font-size: 0.9rem; }
+  .aok { font-weight: 700; padding: 14px; border-radius: 12px; background: var(--peach); }
+  @media (max-width: 1000px) {
+    .why, .ksteps { grid-template-columns: 1fr 1fr; }
+    .job__body { grid-template-columns: 1fr; padding-left: 24px; }
+    .apply__grid { grid-template-columns: 1fr; }
+    .k-media { aspect-ratio: 4 / 3; }
+  }
+  @media (max-width: 600px) { .why, .ksteps, .aform { grid-template-columns: 1fr; } .job summary { grid-template-columns: 1fr 44px; } .job__n { display: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-apply]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const tel = form.querySelector<HTMLInputElement>('input[name="Telefon"]')!;
+      const consent = form.querySelector<HTMLInputElement>('.aconsent input')!;
+      const err = form.querySelector<HTMLElement>('[data-apply-err]')!;
+      if ((tel.value.match(/\d/g) || []).length < 6 || !consent.checked) { err.hidden = false; return; }
+      err.hidden = true;
+      const data = new FormData(form);
+      const endpoint = form.dataset.endpoint;
+      let ok = false;
+      if (endpoint) {
+        try { data.append('_subject', 'Bewerbung über die Website'); ok = (await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } })).ok; } catch {}
+      }
+      if (!ok) {
+        const lines = ['Stelle', 'Name', 'Telefon', 'E-Mail', 'Nachricht'].map((k) => `${k}: ${data.get(k) || ''}`).join('\n');
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('Bewerbung über die Website')}&body=${encodeURIComponent(lines + '\n\n(Unterlagen bitte anhängen.)')}`;
+      }
+      form.querySelector<HTMLElement>('[data-apply-ok]')!.hidden = false;
+    });
+  });
+</script>

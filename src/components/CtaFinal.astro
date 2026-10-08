@@ -1,0 +1,60 @@
+---
+import Funnel from './Funnel.astro';
+import Icon from './Icon.astro';
+import { phones } from '../data/site';
+interface Props { flow: 'start' | 'wasser' | 'maler'; image?: string; imageAlt?: string; title: string; text: string }
+const { flow, title, text } = Astro.props;
+const phone = flow === 'wasser' ? phones.wasser : phones.maler;
+const after = flow === 'wasser'
+  ? ['Wir rufen zurück und klären, ob ein Ortstermin nötig ist und was er kostet.', 'Vor Ort messen wir Wand, Estrich und Raumluft. Den Kostenrahmen bekommen Sie schriftlich, bevor ein Gerät aufgebaut wird.', 'Trocknung mit Protokoll, danach die Wiederherstellung durch dasselbe Team.']
+  : ['Sie bekommen eine Rückmeldung am selben Werktag, spätestens am nächsten.', 'Wenn nötig, schauen wir uns das Objekt vor Ort an und messen auf.', 'Sie bekommen ein schriftliches Angebot nach Positionen, bevor wir anfangen.'];
+---
+<section class:list={['cta', flow === 'wasser' ? 'cta--water on-dark' : 'cta--warm']} id="anfrage">
+  <div class="wrap cta__grid">
+    <div class="cta__copy">
+      <h2 class="h1" data-split set:html={title} />
+      <p class="lead" data-reveal>{text}</p>
+      <a href={phone.href} class="cta__phone" data-reveal>
+        <span class="cta__phone-icon"><Icon name="phone" size={22} /></span>
+        <span>
+          <span class="cta__phone-label">Lieber anrufen{flow === 'wasser' ? ' · werktags' : ''}</span>
+          <span class="cta__phone-num tnum">{phone.display}</span>
+        </span>
+      </a>
+      <div class="cta__after" data-reveal>
+        <p class="cta__after-title">Was danach passiert</p>
+        <ol>
+          {after.map((a, i) => <li><span class="cta__n tnum">{i + 1}</span><span>{a}</span></li>)}
+        </ol>
+      </div>
+    </div>
+    <div class="cta__form" data-reveal>
+      <Funnel flow={flow} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { padding: clamp(80px, 10vw, 150px) 0; }
+  .cta--warm { background: var(--peach); --muted: rgba(0, 0, 0, 0.72); --hl: var(--ink); --hl-ink: #fff; }
+  .cta--water { background: var(--blue); --hl: #fff; --hl-ink: var(--blue); }
+  .cta__grid { display: grid; grid-template-columns: 1fr minmax(0, 540px); gap: clamp(40px, 6vw, 110px); align-items: start; }
+  .cta__copy { display: grid; gap: 28px; align-content: start; }
+  .cta__copy .lead { color: inherit; opacity: 0.85; }
+  .cta__phone { display: inline-flex; align-items: center; gap: 16px; width: fit-content; padding: 10px 28px 10px 10px; border-radius: 999px; background: var(--ink); color: #fff; transition: transform 0.3s var(--ease-out); }
+  .cta--water .cta__phone { background: #fff; color: var(--ink); }
+  .cta__phone:hover { transform: translateY(-3px) rotate(-1deg); }
+  .cta__phone-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--peach); color: var(--ink); display: grid; place-items: center; }
+  .cta--water .cta__phone-icon { background: var(--blue); color: #fff; }
+  .cta__phone > span:last-child { display: flex; flex-direction: column; }
+  .cta__phone-label { font-size: 0.85rem; font-weight: 600; opacity: 0.7; }
+  .cta__phone-num { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.03em; }
+  .cta__after-title { font-weight: 800; margin-bottom: 10px; }
+  .cta__after ol { display: grid; gap: 8px; max-width: 520px; }
+  .cta__after li { display: flex; gap: 14px; align-items: flex-start; font-weight: 550; }
+  .cta__n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 0.85rem; font-weight: 800; }
+  .cta--water .cta__n { background: #fff; color: var(--blue); }
+  .cta__form { display: flex; justify-content: flex-end; }
+  .cta--water .cta__form :global(.funnel) { border-color: #fff; }
+  @media (max-width: 1000px) { .cta__grid { grid-template-columns: 1fr; } .cta__form { justify-content: stretch; } .cta__form :global(.funnel) { max-width: none; } }
+</style>

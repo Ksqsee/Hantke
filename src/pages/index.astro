@@ -1,0 +1,167 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Compare from '../components/Compare.astro';
+import ValueGrid from '../components/ValueGrid.astro';
+import Process from '../components/Process.astro';
+import Promises from '../components/Promises.astro';
+import Reviews from '../components/Reviews.astro';
+import AreaCheck from '../components/AreaCheck.astro';
+import Faq from '../components/Faq.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import { company, phones } from '../data/site';
+import { processSteps, promises, generalFaq } from '../data/content';
+---
+<Base
+  title="Maler Hantke Hamburg — Malermeisterbetrieb & Bautrocknung seit 2002"
+  description="Malerarbeiten und Trocknung nach Wasserschaden aus einer Hand. Meisterbetrieb aus Hamburg-Lokstedt, 5,0 auf Google. Rückmeldung am selben Werktag."
+  overHero
+>
+  <Hero
+    image="eppendorf-altbau"
+    imageAlt="Altbau mit Erkern in Hamburg-Eppendorf"
+    position="50% 35%"
+    eyebrow="Malermeisterbetrieb · Hamburg · seit 2002"
+    title="Ein Anruf. Ein Betrieb. Ein <em data-tag='fertig ✓'>fertiger Raum.</em>"
+    lead="Wir streichen, tapezieren und spachteln in Hamburg. Und wenn Wasser im Spiel war, trocknen wir vorher selbst. Messen, trocknen, herrichten: alles aus einem Meisterbetrieb."
+    flow="start"
+    proof={['5,0 auf Google', 'Meisterbetrieb seit 2002', 'Rückmeldung am selben Werktag', 'Ein Ansprechpartner bis zur Abnahme']}
+  />
+
+  <Compare
+    eyebrow="Das übliche Problem"
+    title="Nach einem Wasserschaden kommen oft <em>drei Firmen.</em> Bei uns eine."
+    intro="Trocknungsfirma, Maler, Bodenleger: Jeder macht seinen Teil, keiner ist für das Ergebnis zuständig. Wir machen es selbst, vom ersten Messwert bis zur gestrichenen Wand."
+    before={{
+      label: 'So läuft es oft',
+      items: ['Die Trocknungsfirma misst, stellt Geräte auf und ist wieder weg', 'Der Maler kommt Wochen später, wenn er Zeit hat', 'Bei Rissen und Flecken: Diskussion, wer zuständig ist', 'Drei Termine, drei Ansprechpartner, drei Rechnungen'],
+      total: '3 Firmen. 3 Rechnungen.',
+    }}
+    after={{
+      label: 'Mit Hantke',
+      items: ['Messen, trocknen, spachteln, streichen: ein Team', 'Ein fester Ansprechpartner vom Anruf bis zur Abnahme', 'Messprotokoll und Rechnung nach Positionen für die Versicherung', 'Gemeinsame Abnahme, bevor die Rechnung kommt'],
+      total: '1 Betrieb. 1 Rechnung.',
+    }}
+  />
+
+  <ValueGrid />
+
+  <!-- Two worlds -->
+  <section class="section worlds" id="leistungen">
+    <div class="wrap">
+      <div class="worlds__head">
+        <p class="eyebrow" data-reveal>Leistungen</p>
+        <h2 class="h2" data-split>Zwei Bereiche. Ein <em class="hl-blue">Team.</em></h2>
+      </div>
+      <div class="worlds__grid">
+        <article class="world world--warm" data-reveal>
+          <div class="world__media media">
+            <Img name="villa-mittelweg" alt="Gründerzeitvilla am Mittelweg in Hamburg-Harvestehude" sizes="(max-width: 900px) 100vw, 50vw" />
+          </div>
+          <div class="world__body">
+            <p class="world__tag">Maler Hantke</p>
+            <h3 class="h2">Malerarbeiten</h3>
+            <ul class="world__list">
+              <li>Wände und Decken</li><li>Tapezieren</li><li>Spachteln und Putz</li><li>Fassade</li><li>Lackierarbeiten</li><li>Boden, Plissees, Küchenmontage</li>
+            </ul>
+            <a href="/malerarbeiten" class="world__go">Malerarbeiten ansehen <Icon name="arrow" size={18} /></a>
+          </div>
+        </article>
+        <article class="world world--water" data-reveal style="--d:.1s">
+          <div class="world__media media">
+            <Img name="regenfront" alt="Regenfront über Hamburg" sizes="(max-width: 900px) 100vw, 50vw" position="60% 50%" />
+          </div>
+          <div class="world__body">
+            <p class="world__tag">Hantke Bautrocknung</p>
+            <h3 class="h2">Wasserschaden &amp; Trocknung</h3>
+            <ul class="world__list">
+              <li>Technische Trocknung</li><li>Dämmschichttrocknung</li><li>Estrichtrocknung</li><li>Bautrocknung im Neubau</li><li>Leckortung</li><li>Wiederherstellung</li>
+            </ul>
+            <a href="/wasserschaden" class="world__go">Zur Bautrocknung <Icon name="arrow" size={18} /></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <Process
+    eyebrow="Zusammenarbeit"
+    title="Von der Anfrage bis zur <em>Abnahme.</em>"
+    intro="Fünf Schritte, die bei jedem Auftrag gleich laufen. Bei der einzelnen Wand genauso wie bei der kompletten Wohnung."
+    note={`Fester Ansprechpartner: ${company.manager}, Betriebsleiter`}
+    steps={processSteps}
+  />
+
+  <Promises title="Vier Punkte, an denen Sie uns <em>messen</em> können." items={promises} />
+
+  <Reviews />
+
+  <!-- Betrieb -->
+  <section class="section betrieb surface-paper-2">
+    <div class="wrap betrieb__grid">
+      <div class="betrieb__media media media--parallax" data-parallax="8" data-reveal="fade">
+        <Img name="boetelkamp" alt="Straßenschild Bötelkamp in Hamburg-Lokstedt" sizes="(max-width: 900px) 100vw, 45vw" />
+      </div>
+      <div class="betrieb__copy">
+        <p class="eyebrow" data-reveal>Der Betrieb</p>
+        <h2 class="h2" data-split>Kein Vermittlungsportal. Ein Betrieb am <em>Bötelkamp.</em></h2>
+        <p class="body" data-reveal>{company.name}, {company.street} in Lokstedt. Malerarbeiten, Oberflächen, Fassaden und die Trocknung nach einem Wasserschaden: geplant, ausgeführt und abgenommen von denselben Leuten.</p>
+        <dl class="stats">
+          <div data-reveal><dt>Gegründet</dt><dd class="tnum" data-count="2002" data-from="1980" data-duration="2.2">2002</dd></div>
+          <div data-reveal style="--d:.06s"><dt>Ansprechpartner</dt><dd class="tnum" data-count="1" data-from="3">1</dd></div>
+          <div data-reveal style="--d:.12s"><dt>Leute pro Baustelle</dt><dd class="tnum">2–3</dd></div>
+          <div data-reveal style="--d:.18s"><dt>Wechselnde Subunternehmer</dt><dd class="tnum" data-count="0" data-from="9">0</dd></div>
+        </dl>
+        <a href="/ueber-uns" class="link" data-reveal>Mehr über uns <Icon name="arrow" size={16} /></a>
+      </div>
+    </div>
+  </section>
+
+  <AreaCheck />
+
+  <Faq title="Was immer <em>gefragt</em> wird." intro={`Ihre Frage ist nicht dabei? Rufen Sie an: ${phones.maler.display}.`} items={generalFaq} />
+
+  <CtaFinal
+    flow="start"
+    title="Erzählen Sie uns, was <em>ansteht.</em>"
+    text="Vier kurze Fragen, eine Telefonnummer. Den Rest klären wir am Telefon oder beim Ortstermin."
+  />
+</Base>
+
+<style>
+  .worlds__head { display: grid; gap: 20px; margin-bottom: clamp(40px, 5vw, 72px); }
+  .worlds__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .world { position: relative; display: grid; grid-template-rows: auto 1fr; border-radius: 26px; overflow: hidden; padding: 12px; transition: transform 0.5s var(--ease-out); }
+  .world:hover { transform: translateY(-4px); }
+  .world--warm { background: var(--peach); color: var(--ink); }
+  .world--water { background: var(--blue); color: #fff; }
+  .world__media { aspect-ratio: 16 / 10; border-radius: 16px; }
+  .world__media :global(img) { transition: transform 1.2s var(--ease-out); }
+  .world:hover .world__media :global(img) { transform: scale(1.04); }
+  .world__body { display: grid; gap: 18px; padding: clamp(16px, 2.4vw, 32px) clamp(12px, 2vw, 24px) clamp(16px, 2vw, 24px); align-content: start; }
+  .world__tag { font-weight: 700; }
+  .world__list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .world__list li { padding: 7px 13px; border-radius: 999px; background: rgba(255, 255, 255, 0.55); font-size: 0.92rem; font-weight: 600; }
+  .world--water .world__list li { background: rgba(255, 255, 255, 0.16); }
+  .world__go { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; margin-top: 8px; width: fit-content; padding: 12px 20px; border-radius: 999px; background: var(--ink); color: #fff; }
+  .world--water .world__go { background: #fff; color: var(--blue); }
+  .world__go::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+  .world :global(.credit) { z-index: 2; }
+
+  .betrieb__grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 110px); align-items: center; }
+  .betrieb__media { aspect-ratio: 4 / 5; }
+  .betrieb__copy { display: grid; gap: 24px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+  .stats div { padding: 18px; border-radius: 18px; background: #fff; display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
+  .stats div:nth-child(2) { background: var(--peach); }
+  .stats div:nth-child(4) { background: var(--ink); color: #fff; }
+  .stats dd { font-weight: 800; font-size: clamp(2.4rem, 4vw, 3.8rem); line-height: 0.9; letter-spacing: -0.06em; }
+  .stats dt { font-size: 0.85rem; font-weight: 650; opacity: 0.75; }
+  @media (max-width: 900px) {
+    .worlds__grid, .betrieb__grid { grid-template-columns: 1fr; }
+    .betrieb__media { aspect-ratio: 16 / 11; }
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>

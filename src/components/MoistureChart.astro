@@ -1,0 +1,120 @@
+---
+// Illustrative drying curve. Scroll scrubs a cursor along the curve; readout updates live.
+const days = 21;
+const pts = [78, 76, 72, 67, 61, 56, 51, 47, 42, 39, 36, 33, 31, 29, 27, 25, 24, 23, 22, 21, 20, 19];
+const W = 640, H = 300, padL = 44, padR = 16, padT = 20, padB = 34;
+const x = (d: number) => padL + (d / days) * (W - padL - padR);
+const y = (v: number) => padT + (1 - (v - 10) / 80) * (H - padT - padB);
+const d = pts.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+const area = `${d} L${x(days)},${H - padB} L${x(0)},${H - padB} Z`;
+const limit = 25;
+---
+<div class="mchart" data-mchart data-points={JSON.stringify(pts)} data-days={days}>
+  <div class="mchart__top">
+    <div>
+      <p class="mono mchart__label">Dämmschicht · relative Feuchte</p>
+      <p class="mchart__value"><span class="tnum" data-mc-val>78</span><span class="mchart__unit">% rF</span></p>
+    </div>
+    <div class="mchart__meta mono">
+      <span>Tag <span class="tnum" data-mc-day>0</span></span>
+      <span class="mchart__status" data-mc-status>Trocknung läuft</span>
+    </div>
+  </div>
+  <svg viewBox={`0 0 ${W} ${H}`} class="mchart__svg" role="img" aria-label="Beispielhafter Trocknungsverlauf: relative Feuchte sinkt über drei Wochen von 78 auf unter 25 Prozent">
+    <defs>
+      <linearGradient id="mcFill" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#183eeb" stop-opacity="0.22" />
+        <stop offset="100%" stop-color="#183eeb" stop-opacity="0" />
+      </linearGradient>
+      <clipPath id="mcClip"><rect data-mc-clip x="0" y="0" width="0" height={H} /></clipPath>
+    </defs>
+    {[20, 40, 60, 80].map((v) => (
+      <g>
+        <line x1={padL} x2={W - padR} y1={y(v)} y2={y(v)} class="mchart__grid" />
+        <text x={padL - 10} y={y(v) + 4} class="mchart__axis" text-anchor="end">{v}</text>
+      </g>
+    ))}
+    {[0, 7, 14, 21].map((t) => (
+      <text x={x(t)} y={H - 10} class="mchart__axis" text-anchor="middle">{t === 0 ? 'Aufbau' : `Tag ${t}`}</text>
+    ))}
+    <line x1={padL} x2={W - padR} y1={y(limit)} y2={y(limit)} class="mchart__limit" />
+    <text x={W - padR} y={y(limit) - 8} class="mchart__limit-label" text-anchor="end">Zielwert · Freigabe</text>
+    <g clip-path="url(#mcClip)">
+      <path d={area} fill="url(#mcFill)" />
+      <path d={d} class="mchart__line" />
+    </g>
+    {[0, 3, 6, 9, 12, 15, 18, 21].map((t) => (
+      <circle cx={x(t)} cy={y(pts[t])} r="3" class="mchart__dot" data-mc-dot={t} />
+    ))}
+    <g data-mc-cursor class="mchart__cursor">
+      <line y1={padT} y2={H - padB} x1="0" x2="0" />
+      <circle r="6" cx="0" cy="0" data-mc-knob />
+    </g>
+  </svg>
+  <p class="mono mchart__foot">Beispielverlauf. Gemessen wird alle zwei bis drei Tage, jeder Wert landet im Protokoll. Abgebaut wird erst, wenn die Kontrollmessung den Grenzwert unterschreitet.</p>
+</div>
+
+<style>
+  .mchart { padding: clamp(20px, 3vw, 32px); border-radius: 20px; background: #fff; border: 1px solid var(--line); color: var(--ink); }
+  .mchart__top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 16px; }
+  .mchart__label { color: var(--ink-2); font-size: 0.7rem; }
+  .mchart__value { font-weight: 800; letter-spacing: -0.045em; font-size: clamp(3.4rem, 6vw, 5rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--blue); }
+  .mchart__unit { font-size: 0.4em; margin-left: 6px; color: var(--ink-2); letter-spacing: 0; }
+  .mchart__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 0.75rem; color: var(--ink-2); }
+  .mchart__status { padding: 4px 10px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); }
+  .mchart__status.is-done { background: #e7f8ef; color: #15803d; }
+  .mchart__svg { width: 100%; height: auto; overflow: visible; }
+  .mchart__grid { stroke: rgba(31, 28, 26, 0.08); }
+  .mchart__axis { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-3); }
+  .mchart__limit { stroke: #2fbf71; stroke-dasharray: 4 4; }
+  .mchart__limit-label { font-family: var(--font-mono); font-size: 10px; fill: #15803d; }
+  .mchart__line { fill: none; stroke: var(--blue); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+  .mchart__dot { fill: #fff; stroke: var(--blue); stroke-width: 1.5; opacity: 0; transition: opacity 0.3s; }
+  .mchart__dot.is-on { opacity: 1; }
+  .mchart__cursor line { stroke: var(--navy); stroke-width: 1; stroke-dasharray: 2 3; }
+  .mchart__cursor circle { fill: var(--blue); stroke: #fff; stroke-width: 2.5; filter: drop-shadow(0 2px 6px rgba(24, 62, 235, 0.45)); }
+  .mchart__foot { margin-top: 14px; color: var(--ink-3); font-size: 0.7rem; line-height: 1.5; }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll<HTMLElement>('[data-mchart]').forEach((el) => {
+    const pts: number[] = JSON.parse(el.dataset.points!);
+    const days = parseInt(el.dataset.days!, 10);
+    const svg = el.querySelector('svg')!;
+    const vb = svg.viewBox.baseVal;
+    const W = vb.width, H = vb.height, padL = 44, padR = 16, padT = 20, padB = 34;
+    const x = (d: number) => padL + (d / days) * (W - padL - padR);
+    const y = (v: number) => padT + (1 - (v - 10) / 80) * (H - padT - padB);
+    const clip = el.querySelector<SVGRectElement>('[data-mc-clip]')!;
+    const cursor = el.querySelector<SVGGElement>('[data-mc-cursor]')!;
+    const knob = el.querySelector<SVGCircleElement>('[data-mc-knob]')!;
+    const val = el.querySelector<HTMLElement>('[data-mc-val]')!;
+    const day = el.querySelector<HTMLElement>('[data-mc-day]')!;
+    const status = el.querySelector<HTMLElement>('[data-mc-status]')!;
+    const dots = el.querySelectorAll<SVGCircleElement>('[data-mc-dot]');
+
+    const render = (p: number) => {
+      const t = p * days;
+      const i = Math.min(days - 1, Math.floor(t));
+      const v = pts[i] + (pts[i + 1] - pts[i]) * (t - i);
+      clip.setAttribute('width', String(x(t) + 2));
+      cursor.setAttribute('transform', `translate(${x(t)},0)`);
+      knob.setAttribute('cy', String(y(v)));
+      val.textContent = String(Math.round(v));
+      day.textContent = String(Math.round(t));
+      const done = v <= 25;
+      status.textContent = done ? 'Freigabe möglich' : 'Trocknung läuft';
+      status.classList.toggle('is-done', done);
+      dots.forEach((d) => d.classList.toggle('is-on', parseInt(d.dataset.mcDot!, 10) <= t));
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { render(1); return; }
+    render(0);
+    const o = { p: 0 };
+    gsap.to(o, { p: 1, ease: 'none', onUpdate: () => render(o.p), scrollTrigger: { trigger: el, start: 'top 75%', end: 'bottom 35%', scrub: 0.6 } });
+  });
+</script>

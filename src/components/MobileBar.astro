@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { phones } from '../data/site';
+interface Props { world: 'warm' | 'water' }
+const { world } = Astro.props;
+const phone = world === 'water' ? phones.wasser : phones.maler;
+---
+<div class="mbar" data-mbar>
+  <a href={phone.href} class="mbar__call">
+    <Icon name="phone" size={18} />
+    <span>Anrufen</span>
+  </a>
+  <a href="#anfrage" class="mbar__form">
+    <span>{world === 'water' ? 'Schaden melden' : 'Anfrage in 60 Sek.'}</span>
+    <Icon name="arrow" size={18} />
+  </a>
+</div>
+
+<style>
+  .mbar { display: none; }
+  @media (max-width: 760px) {
+    .mbar {
+      position: fixed; z-index: 40; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom));
+      display: grid; grid-template-columns: auto 1fr; gap: 8px;
+      padding: 6px; border-radius: 999px;
+      background: color-mix(in srgb, var(--ink) 92%, transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.45);
+      transform: translateY(140%); transition: transform 0.6s var(--ease-out);
+    }
+    .mbar.is-visible { transform: none; }
+    .mbar a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; border-radius: 999px; font-weight: 600; font-size: 0.98rem; }
+    .mbar__call { padding: 0 20px; color: #fff; }
+    .mbar__form { background: var(--accent); color: var(--accent-contrast); }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-mbar]');
+  if (bar) {
+    const forms = document.querySelectorAll('#anfrage');
+    let formVisible = false;
+    const update = () => bar.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.6 && !formVisible);
+    if (forms.length) {
+      new IntersectionObserver((e) => { formVisible = e.some((x) => x.isIntersecting); update(); }, { threshold: 0.15 }).observe(forms[0]);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+</script>

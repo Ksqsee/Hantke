@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { phones } from '../data/site';
+---
+<a href="/wasserschaden" class="ebar">
+  <span class="ebar__inner wrap">
+    <span class="ebar__dot" aria-hidden="true"></span>
+    <span class="ebar__text"><strong>Wasserschaden?</strong> <span class="hide-mobile">Erst Haupthahn zu — dann anrufen:</span><span class="show-mobile">Hilfe &amp; Nummer</span></span>
+    <span class="ebar__num tnum hide-mobile">{phones.wasser.display}</span>
+    <Icon name="arrow" size={16} class="ebar__arrow" />
+  </span>
+</a>
+
+<style>
+  .ebar { display: block; position: relative; z-index: 51; background: var(--blue); color: #fff; font-size: 0.88rem; }
+  .ebar__inner { display: flex; align-items: center; gap: 12px; height: 40px; }
+  .ebar__dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: blink 1.6s steps(2, start) infinite; }
+  @keyframes blink { to { opacity: 0.25; } }
+  .ebar__text strong { font-weight: 650; }
+  .ebar__num { font-family: var(--font-mono); font-size: 0.82rem; margin-left: auto; letter-spacing: 0.02em; }
+  .ebar :global(.ebar__arrow) { transition: transform 0.4s var(--ease-out); }
+  .ebar:hover :global(.ebar__arrow) { transform: translateX(4px); }
+  @media (max-width: 760px) { .ebar :global(.ebar__arrow) { margin-left: auto; } }
+</style>

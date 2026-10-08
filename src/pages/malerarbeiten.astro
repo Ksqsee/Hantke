@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ValueGrid from '../components/ValueGrid.astro';
+import Process from '../components/Process.astro';
+import Promises from '../components/Promises.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import { phones } from '../data/site';
+import { processSteps, malerFaq } from '../data/content';
+
+const services = [
+  { name: 'Wände und Decken', text: 'Anstricharbeiten von Decken und Wänden. Gleichmäßig, sauber und langlebig.' },
+  { name: 'Tapezieren', text: 'Von Raufaser bis Design- und Vliestapete. Präzise und sauber verarbeitet.' },
+  { name: 'Spachteln und Glätten', text: 'Die ideale Grundlage für Anstriche und Tapeten. Bis zur Spachteltechnik im Altbau.' },
+  { name: 'Strukturputz', text: 'Oberflächen mit Charakter, gleichmäßig aufgezogen.' },
+  { name: 'Fassade', text: 'Fassadenanstriche, die schützen und ein gepflegtes Erscheinungsbild geben.' },
+  { name: 'Lackierarbeiten', text: 'Fenster, Türen und Rahmen lackieren. Sauber abgesetzt.' },
+  { name: 'Boden verlegen', text: 'Bodenbeläge als Abschluss der Renovierung, aus derselben Hand.' },
+  { name: 'Plissees und Sonnenschutz', text: 'Aufmaß, Lieferung und Montage. Passgenau in Fenster und Türen.' },
+  { name: 'Küchenmontage', text: 'Aufbau und Montage neuer Küchen. Sauber ausgerichtet und passgenau angearbeitet.' },
+];
+const ways = [
+  { title: 'Erst schauen, dann anbieten.', text: 'Ein Angebot, das ohne Ortstermin entsteht, ist eine Schätzung. Und Schätzungen werden auf der Baustelle teuer.' },
+  { title: 'Der Schutz kommt vor der Farbe.', text: 'Folie und Malervlies auf dem Boden, Fußleisten und Rahmen abgeklebt. Der Aufwand davor entscheidet, wie die Kanten hinterher aussehen.' },
+  { title: 'Feuchtigkeit zuerst.', text: 'Auf eine feuchte Wand gehört keine Farbe. Wo Wasser im Spiel war, wird gemessen und getrocknet, bevor gespachtelt wird.' },
+  { title: 'Abnahme im Stehen, nicht per Mail.', text: 'Am Ende gehen wir mit Ihnen durch die Räume. Was auffällt, wird behoben, bevor die Rechnung kommt.' },
+];
+---
+<Base
+  title="Malerarbeiten Hamburg — Maler Hantke | Meisterbetrieb seit 2002"
+  description="Malerarbeiten in Hamburg vom Meisterbetrieb: Wände und Decken, Tapeten, Spachteln, Fassade, Lackieren. Angebot kostenlos und unverbindlich, Rückmeldung am selben Werktag."
+>
+  <Hero
+    image="harvestehude-villa"
+    imageAlt="Helle Villa in Hamburg-Harvestehude im Nebel"
+    position="50% 55%"
+    eyebrow="Malerarbeiten Hamburg · Meisterbetrieb seit 2002"
+    title="Wände, Decken, Fassade. Sauber <em data-tag='vom Meister'>gestrichen.</em>"
+    lead="Das Angebot ist kostenlos und unverbindlich, schriftlich und nach Positionen. Und Sie bekommen es, bevor wir anfangen. Rückmeldung am selben Werktag."
+    flow="maler"
+    proof={['Angebot kostenlos', 'Rückmeldung am selben Werktag', 'Dieselben Leute bis zum Schluss', 'Abnahme vor der Rechnung']}
+  >
+    <div slot="actions" class="hero-actions" data-reveal style="--d:.3s">
+      <a href={phones.maler.href} class="btn btn--lg"><Icon name="phone" class="btn__icon" /> <span class="tnum">{phones.maler.display}</span></a>
+    </div>
+  </Hero>
+
+  <section class="section services" id="leistungen">
+    <div class="wrap">
+      <div class="services__head">
+        <p class="eyebrow" data-reveal>Leistungen</p>
+        <h2 class="h2" data-split>Was wir <em>selbst</em> ausführen.</h2>
+      </div>
+      <ul class="srows">
+        {services.map((s, i) => (
+          <li data-reveal style={`--d:${i * 0.03}s`}>
+            <a href="#anfrage" class="srow">
+              <span class="srow__n tnum">{String(i + 1).padStart(2, '0')}</span>
+              <span class="srow__name">{s.name}</span>
+              <span class="srow__text">{s.text}</span>
+              <span class="srow__go"><Icon name="arrow" size={20} /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Promises eyebrow="Wie wir arbeiten" title="Vier Punkte, an denen wir uns <em>messen</em> lassen." items={ways} />
+
+  <section class="section facade">
+    <div class="wrap facade__grid">
+      <div class="facade__media media media--parallax" data-parallax="8" data-reveal="fade">
+        <Img name="speicherstadt-fassade" alt="Backsteinfassaden der Speicherstadt am Brooksfleet" sizes="(max-width: 900px) 100vw, 55vw" />
+      </div>
+      <div class="facade__copy">
+        <p class="eyebrow" data-reveal>Innen wie außen</p>
+        <h2 class="h2" data-split>Eine Fassade verzeiht <em>nichts.</em></h2>
+        <p class="lead" data-reveal>Sie steht 15 Jahre in Hamburger Wetter. Oder eben nicht.</p>
+        <ol class="facade__steps" data-reveal>
+          <li><span>1</span>Untergrund prüfen</li>
+          <li><span>2</span>Risse schließen</li>
+          <li><span>3</span>Grundieren</li>
+          <li><span>4</span>Zweimal beschichten</li>
+        </ol>
+        <p class="body" data-reveal>Wir kürzen den Aufbau nicht ab, weil der Aufbau die Haltbarkeit ist.</p>
+      </div>
+    </div>
+  </section>
+
+  <ValueGrid />
+
+  <Process eyebrow="Zusammenarbeit" title="Von der Anfrage bis zur <em>Abnahme.</em>" intro="Fünf Schritte, die bei jedem Auftrag gleich laufen. Bei der einzelnen Wand genauso wie bei der kompletten Wohnung." steps={processSteps} note="Angebot kostenlos und unverbindlich" />
+
+  <Reviews />
+
+  <Faq title="Was Sie vorher <em>wissen</em> wollen." intro={`Ihre Frage ist nicht dabei? ${phones.maler.display}`} items={malerFaq} />
+
+  <CtaFinal flow="maler" title="Erzählen Sie uns, was <em>ansteht.</em>" text="Je genauer die Angaben, desto belastbarer unsere Rückmeldung. Fotos helfen am meisten." />
+</Base>
+
+<style>
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .services__head { display: grid; gap: 20px; margin-bottom: clamp(32px, 4vw, 56px); }
+  .srows { border-top: 2px solid var(--ink); }
+  .srow { display: grid; grid-template-columns: 64px 1.1fr 1.4fr 48px; gap: 24px; align-items: center; padding: 26px 16px; border-bottom: 2px solid var(--ink); position: relative; isolation: isolate; transition: padding 0.4s var(--ease-out); }
+  .srow::before { content: ''; position: absolute; inset: 0; background: var(--peach); transform: scaleY(0); transform-origin: bottom; transition: transform 0.45s var(--ease-out); z-index: -1; }
+  .srow:hover::before { transform: scaleY(1); }
+  .srow:hover { padding-left: 28px; }
+  .srow__n { font-weight: 800; color: var(--ink-3); }
+  .srow:hover .srow__n { color: var(--ink); }
+  .srow__name { font-size: var(--step-3); font-weight: 800; letter-spacing: -0.045em; line-height: 1; }
+  .srow__text { color: var(--ink-2); }
+  .srow__go { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--grey); transition: background 0.3s, transform 0.4s var(--ease-out); }
+  .srow:hover .srow__go { background: var(--ink); color: #fff; transform: rotate(-45deg); }
+
+  .facade__grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .facade__media { aspect-ratio: 4 / 3.4; }
+  .facade__copy { display: grid; gap: 22px; }
+  .facade__steps { display: grid; gap: 8px; }
+  .facade__steps li { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 16px; background: var(--grey); font-weight: 700; font-size: var(--step-1); }
+  .facade__steps li:nth-child(4) { background: var(--peach); }
+  .facade__steps span { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 0.9rem; }
+  @media (max-width: 900px) {
+    .srow { grid-template-columns: 40px 1fr 40px; }
+    .srow__text { grid-column: 2 / 3; grid-row: 2; }
+    .srow__go { width: 40px; height: 40px; }
+    .facade__grid { grid-template-columns: 1fr; }
+  }
+</style>

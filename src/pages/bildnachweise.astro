@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import credits from '../data/credits.json';
+const licenseUrl = (l: string) => {
+  const m = l.match(/CC (BY(?:-SA)?) ([\d.]+)( de)?/i);
+  if (!m) return null;
+  return `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2]}/${m[3] ? 'de/' : ''}`;
+};
+---
+<Base title="Bildnachweise — Maler Hantke" description="Bildnachweise und Lizenzen der auf dieser Website verwendeten Fotos." noindex>
+  <section class="credits">
+    <div class="wrap">
+      <p class="credits__eyebrow">Rechtliches</p>
+      <h1 class="h1 credits__title">Bildnachweise</h1>
+      <p class="lead">Alle Fotos stammen von Wikimedia Commons und stehen unter freien Lizenzen. Wir danken den Fotografinnen und Fotografen. Die Bilder wurden für die Website zugeschnitten und komprimiert.</p>
+      <ul class="credits__list">
+        {credits.map((c) => (
+          <li id={c.file}>
+            <img src={`/img/${c.file}-800.webp`} alt="" loading="lazy" width="160" height="110" />
+            <div>
+              <p class="h4">{c.title.replace(/\.(jpe?g|png)$/i, '')}</p>
+              <p class="credits__meta">Foto: {c.author} · Lizenz: {licenseUrl(c.license) ? <a href={licenseUrl(c.license)} rel="noopener license">{c.license}</a> : c.license}</p>
+              <a class="link" href={c.source} rel="noopener">Quelle auf Wikimedia Commons</a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .credits { padding: calc(var(--nav-h) + clamp(48px, 6vw, 96px)) 0 clamp(80px, 10vw, 140px); }
+  .credits__eyebrow { font-weight: 650; margin-bottom: 16px; }
+  .credits__title { margin-bottom: 24px; font-size: clamp(2.6rem, 1.6rem + 3vw, 4.6rem); }
+  .credits__list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 48px; }
+  .credits__list li { display: grid; grid-template-columns: 160px 1fr; gap: 20px; padding: 14px; border-radius: 20px; background: var(--grey); align-items: center; scroll-margin-top: 120px; }
+  .credits__list li:target { background: var(--peach); }
+  .credits__list img { width: 160px; height: 110px; object-fit: cover; border-radius: 12px; }
+  .credits__list div { display: grid; gap: 6px; }
+  .credits__meta { color: var(--ink-2); font-size: 0.92rem; }
+  .credits__meta a { text-decoration: underline; }
+  @media (max-width: 900px) { .credits__list { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .credits__list li { grid-template-columns: 1fr; } .credits__list img { width: 100%; height: 160px; } }
+</style>

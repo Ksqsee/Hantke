@@ -1,0 +1,531 @@
+---
+import Icon from './Icon.astro';
+import { funnels } from '../data/funnels';
+import { company, phones, formEndpoint } from '../data/site';
+
+interface Props { flow: 'start' | 'wasser' | 'maler'; id?: string; compact?: boolean; tiles?: boolean }
+const { flow, id, compact = false, tiles = false } = Astro.props;
+const f = funnels[flow];
+const initialBranch = flow === 'start' ? '' : flow;
+const total = flow === 'start' ? 5 : f.steps.filter((s) => s.kind !== 'info').length;
+const branchOf = (stepId: string) => (stepId.startsWith('wasser_') ? 'wasser' : stepId.startsWith('maler_') ? 'maler' : '');
+---
+<form
+  class:list={['funnel', { 'funnel--compact': compact }]}
+  id={id}
+  data-funnel
+  data-flow={flow}
+  data-branch={initialBranch}
+  data-endpoint={formEndpoint}
+  data-email={company.email}
+  data-subject={f.subjectPrefix}
+  method="post"
+  action={formEndpoint || `mailto:${company.email}`}
+  enctype={formEndpoint ? 'multipart/form-data' : 'text/plain'}
+  novalidate
+>
+  <input type="hidden" name="branch" value={initialBranch} data-field="branch" />
+
+  <div class="funnel__head">
+    <span class="funnel__count"><span data-funnel-label>{flow === 'wasser' ? 'Schaden melden' : 'Anfrage'}</span> · Schritt <span class="tnum" data-step-now>1</span> von <span class="tnum" data-step-total data-initial={total}>{total}</span></span>
+    <button type="button" class="funnel__back" data-back hidden>
+      <Icon name="arrow" size={14} class="funnel__back-icon" /> Zurück
+    </button>
+  </div>
+  <div class="funnel__bar" aria-hidden="true"><span data-bar></span></div>
+
+  <div class="funnel__stage" data-stage aria-live="polite">
+    {f.steps.map((s, i) => {
+      const br = branchOf(s.id);
+      return (
+        <fieldset
+          class:list={['fstep', `fstep--${s.kind}`, { 'fstep--urgent': s.tone === 'urgent', 'fstep--tiles': tiles && i === 0 }]}
+          data-step={s.id}
+          data-kind={s.kind}
+          data-when={s.when ? JSON.stringify(s.when) : undefined}
+          data-unless={s.unless ? JSON.stringify(s.unless) : undefined}
+          data-skip-if-set={s.skipIfSet ? '' : undefined}
+          data-tips={s.tipOn ? JSON.stringify(s.tipOn) : undefined}
+          hidden={i !== 0}
+        >
+          <legend class="fstep__title">{s.title}</legend>
+          {s.help && <p class="fstep__help">{s.help}</p>}
+
+          {(s.kind === 'single' || s.kind === 'multi') && (
+            <div class="fstep__options" role={s.kind === 'single' ? 'radiogroup' : 'group'}>
+              {s.options!.map((o) => (
+                <label class="opt">
+                  <input
+                    type={s.kind === 'single' ? 'radio' : 'checkbox'}
+                    name={s.id}
+                    value={o.value}
+                    data-set={o.set && Object.keys(o.set).length ? JSON.stringify(o.set) : undefined}
+                  />
+                  <span class="opt__box" aria-hidden="true"><Icon name="check" size={14} /></span>
+                  <span class="opt__text">
+                    <span class="opt__label">{o.label}</span>
+                    {o.hint && <span class="opt__hint">{o.hint}</span>}
+                  </span>
+                  <Icon name="arrow" size={16} class="opt__arrow" />
+                </label>
+              ))}
+            </div>
+          )}
+
+          {s.kind === 'multi' && (
+            <button type="button" class="btn btn--block funnel__next" data-next disabled>
+              Weiter <Icon name="arrow" class="btn__icon btn__icon--arrow" />
+            </button>
+          )}
+
+          {s.kind === 'info' && (
+            <div class="urgent">
+              <ol class="urgent__list">
+                <li><span class="urgent__n">01</span><span><strong>Wasser abstellen.</strong> Eckventil am Gerät zudrehen, sonst den Haupthahn.</span></li>
+                <li><span class="urgent__n">02</span><span><strong>Strom sichern.</strong> Steht Wasser an Steckdosen oder Leuchten: Stromkreis abschalten.</span></li>
+                <li><span class="urgent__n">03</span><span><strong>Fotos machen</strong>, bevor Sie aufräumen. Das hilft später bei der Versicherung.</span></li>
+              </ol>
+              <a href={phones.wasser.href} class="btn btn--accent btn--block btn--lg">
+                <Icon name="phone" class="btn__icon" /> Jetzt anrufen · <span class="tnum">{phones.wasser.display}</span>
+              </a>
+              <button type="button" class="funnel__skip" data-next>Ist erledigt, weiter zum Formular <Icon name="arrow" size={14} /></button>
+            </div>
+          )}
+
+          {s.kind === 'contact' && (
+            <div class="contact">
+              <div class="summary" data-summary></div>
+              <div class="fields">
+                <label class="field field--req">
+                  <span class="field__label">Telefon</span>
+                  <input type="tel" name={`${s.id}_telefon`} data-label="Telefon" autocomplete="tel" inputmode="tel" placeholder="040 …" required />
+                  <span class="field__err">Bitte eine Telefonnummer angeben.</span>
+                </label>
+                {br === 'wasser' ? (
+                  <>
+                    <label class="field">
+                      <span class="field__label">PLZ</span>
+                      <input type="text" name={`${s.id}_plz`} data-label="PLZ" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="22529" />
+                    </label>
+                    <label class="field field--full">
+                      <span class="field__label">Name <span class="field__opt">optional</span></span>
+                      <input type="text" name={`${s.id}_name`} data-label="Name" autocomplete="name" />
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    <label class="field">
+                      <span class="field__label">Name</span>
+                      <input type="text" name={`${s.id}_name`} data-label="Name" autocomplete="name" />
+                    </label>
+                    <label class="field">
+                      <span class="field__label">E-Mail <span class="field__opt">optional</span></span>
+                      <input type="email" name={`${s.id}_email`} data-label="E-Mail" autocomplete="email" />
+                    </label>
+                    <label class="field">
+                      <span class="field__label">PLZ oder Adresse</span>
+                      <input type="text" name={`${s.id}_adresse`} data-label="Adresse" autocomplete="street-address" />
+                    </label>
+                    <label class="field field--full">
+                      <span class="field__label">Was steht an? <span class="field__opt">optional</span></span>
+                      <textarea name={`${s.id}_nachricht`} data-label="Nachricht" rows="2" placeholder="Zum Beispiel: Wohnzimmer und Flur, Altbau, hohe Decken"></textarea>
+                    </label>
+                  </>
+                )}
+                <label class="upload field--full">
+                  <input type="file" name={`${s.id}_fotos`} accept="image/*,application/pdf" multiple data-files />
+                  <span class="upload__icon"><Icon name="camera" size={20} /></span>
+                  <span class="upload__text"><strong>Fotos hinzufügen</strong><span>optional · bis zu 6 Bilder oder PDF</span></span>
+                  <span class="upload__thumbs" data-thumbs></span>
+                </label>
+                <label class="consent field--full">
+                  <input type="checkbox" name={`${s.id}_consent`} required data-consent />
+                  <span class="consent__box" aria-hidden="true"><Icon name="check" size={12} /></span>
+                  <span>Ich bin einverstanden, dass meine Angaben gemäß der <a href="/datenschutz" class="link">Datenschutzerklärung</a> zur Bearbeitung meiner Anfrage gespeichert werden.</span>
+                </label>
+              </div>
+              <p class="funnel__error" data-error hidden>Bitte Telefonnummer angeben und der Verarbeitung zustimmen.</p>
+              <button type="submit" class="btn btn--accent btn--block btn--lg funnel__submit" data-submit>
+                <span data-submit-label>{br === 'wasser' ? 'Rückruf anfordern' : 'Anfrage senden'}</span>
+                <Icon name="arrow" class="btn__icon btn__icon--arrow" />
+              </button>
+              <p class="funnel__promise">
+                <Icon name="clock" size={14} /> <span data-promise>Rückmeldung am selben Werktag</span>
+              </p>
+            </div>
+          )}
+        </fieldset>
+      );
+    })}
+
+    <div class="fdone" data-done hidden>
+      <div class="fdone__check"><Icon name="check" size={28} /></div>
+      <p class="fstep__title" data-done-title>Danke. Ihre Anfrage ist da.</p>
+      <p class="fstep__help" data-done-text>Wir melden uns am selben Werktag, spätestens am nächsten.</p>
+      <div class="fdone__mail" data-mail-fallback hidden>
+        <p class="fstep__help">Ihr E-Mail-Programm sollte sich geöffnet haben. Falls nicht:</p>
+        <a class="btn btn--block" data-mail-link href="#">E-Mail öffnen <Icon name="mail" class="btn__icon" /></a>
+      </div>
+    </div>
+  </div>
+
+  <p class="funnel__tip" data-tip hidden></p>
+</form>
+
+<style>
+  .funnel {
+    position: relative;
+    background: #fff;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 22px;
+    padding: clamp(20px, 2.4vw, 30px);
+    --fg: var(--ink); --muted: var(--ink-2); --line: #e4e4e1;
+    width: 100%;
+    max-width: 560px;
+  }
+  .funnel__head { display: flex; justify-content: space-between; align-items: center; min-height: 24px; }
+  .funnel__count { font-size: 0.85rem; font-weight: 650; }
+  .funnel__back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--ink-2); }
+  .funnel__back:hover { color: var(--ink); }
+  .funnel__back[hidden] { display: none; }
+  .funnel__back :global(.funnel__back-icon) { transform: scaleX(-1); }
+  .funnel__bar { height: 6px; background: var(--grey); margin: 14px 0 24px; border-radius: 6px; overflow: hidden; }
+  .funnel__bar span { display: block; height: 100%; width: 0; min-width: 6px; background: var(--hl); border-radius: 6px; transition: width 0.7s var(--ease-out); }
+  .world-warm .funnel__bar span { background: var(--ink); }
+
+  .fstep { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .fstep[hidden] { display: none; }
+  .fstep.is-entering { animation: stepIn 0.5s var(--ease-out) both; }
+  .fstep.is-back { animation: stepBack 0.5s var(--ease-out) both; }
+  @keyframes stepIn { from { opacity: 0; transform: translateX(20px); } }
+  @keyframes stepBack { from { opacity: 0; transform: translateX(-20px); } }
+  .fstep__title { font-weight: 800; font-size: clamp(1.6rem, 1.3rem + 1.1vw, 2.2rem); line-height: 1.02; letter-spacing: -0.04em; padding: 0; margin-bottom: 8px; text-wrap: balance; }
+  .fstep__help { color: var(--ink-2); font-size: 0.98rem; margin-bottom: 20px; }
+
+  .fstep__options { display: grid; gap: 8px; }
+  .opt { position: relative; display: flex; align-items: center; gap: 14px; padding: 15px 16px; border-radius: 14px; background: var(--grey); cursor: pointer; transition: background-color 0.2s, transform 0.3s var(--ease-out), color 0.2s; }
+  .opt:hover { background: var(--grey-2); }
+  .opt:active { transform: scale(0.985); }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt__box { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; color: transparent; transition: all 0.2s; }
+  .fstep--multi .opt__box { border-radius: 6px; }
+  .opt:has(input:checked) { background: var(--peach); }
+  .opt input:checked ~ .opt__box { background: var(--ink); color: #fff; }
+  .world-water .opt:has(input:checked) { background: var(--blue); color: #fff; }
+  .world-water .opt input:checked ~ .opt__box { background: #fff; border-color: #fff; color: var(--blue); }
+  .world-water .opt:has(input:checked) .opt__hint { color: rgba(255,255,255,.8); }
+  .opt input:focus-visible ~ .opt__box { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .opt__text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+  .opt__label { font-weight: 650; line-height: 1.25; }
+  .opt__hint { font-size: 0.84rem; color: var(--ink-2); }
+  .opt :global(.opt__arrow) { opacity: 0; transform: translateX(-6px); transition: all 0.3s var(--ease-out); }
+  .fstep--single .opt:hover :global(.opt__arrow) { opacity: 1; transform: none; }
+  .fstep--multi :global(.opt__arrow) { display: none; }
+
+  /* Tiles: the first question as four solid colour blocks */
+  .fstep--tiles .fstep__options { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fstep--tiles .opt { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: 150px; padding: 18px; border-radius: 16px; }
+  .fstep--tiles .opt__box { display: none; }
+  .fstep--tiles .opt__label { font-size: 1.15rem; font-weight: 750; letter-spacing: -0.02em; }
+  .fstep--tiles .opt__hint { margin-top: 4px; }
+  .fstep--tiles .opt :global(.opt__arrow) { opacity: 1; transform: none; width: 34px; height: 34px; padding: 8px; border-radius: 50%; background: rgba(255,255,255,.2); order: -1; align-self: flex-end; }
+  .fstep--tiles .opt:nth-child(1) { background: var(--blue); color: #fff; }
+  .fstep--tiles .opt:nth-child(2) { background: var(--navy); color: #fff; }
+  .fstep--tiles .opt:nth-child(3) { background: var(--peach); color: var(--ink); }
+  .fstep--tiles .opt:nth-child(4) { background: var(--ink); color: #fff; }
+  .fstep--tiles .opt:nth-child(3) :global(.opt__arrow) { background: rgba(0,0,0,.08); }
+  .fstep--tiles .opt:nth-child(-n+2) .opt__hint, .fstep--tiles .opt:nth-child(4) .opt__hint { color: rgba(255,255,255,.75); }
+  .fstep--tiles .opt:hover { transform: translateY(-3px) rotate(-0.6deg); }
+  .fstep--tiles .opt:nth-child(even):hover { transform: translateY(-3px) rotate(0.6deg); }
+
+  .funnel__next { margin-top: 18px; }
+  .funnel__next:disabled { opacity: 0.3; pointer-events: none; }
+
+  .urgent { display: grid; gap: 14px; }
+  .fstep--urgent .fstep__title { color: var(--blue); }
+  .urgent__list { display: grid; gap: 6px; }
+  .urgent__list li { display: flex; gap: 14px; padding: 14px 16px; background: var(--blue-soft); border-radius: 12px; font-size: 0.97rem; line-height: 1.45; }
+  .urgent__n { color: var(--blue); font-weight: 800; }
+  .funnel__skip { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.92rem; font-weight: 600; color: var(--ink-2); padding: 6px; }
+  .funnel__skip:hover { color: var(--ink); }
+
+  .summary { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .summary:empty { display: none; }
+  .summary span { font-size: 0.82rem; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: var(--peach); }
+  .world-water .summary span { background: var(--blue); color: #fff; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field--full { grid-column: 1 / -1; }
+  .field__label { font-size: 0.85rem; font-weight: 650; }
+  .field--req .field__label::after { content: ' *'; }
+  .field__opt { font-weight: 500; color: var(--ink-3); }
+  .field input, .field textarea { width: 100%; border: 0; border-radius: 12px; background: var(--grey); padding: 14px; font-size: 1rem; transition: box-shadow 0.2s, background 0.2s; resize: vertical; }
+  .field input:focus, .field textarea:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 2px var(--ink); }
+  .world-water .field input:focus, .world-water .field textarea:focus { box-shadow: inset 0 0 0 2px var(--blue); }
+  .field__err { display: none; font-size: 0.8rem; font-weight: 600; color: #d4380d; }
+  .field.is-invalid input { box-shadow: inset 0 0 0 2px #d4380d; }
+  .field.is-invalid .field__err { display: block; }
+  .upload { position: relative; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 2px dashed #cfcfcb; border-radius: 14px; cursor: pointer; transition: border-color 0.2s; }
+  .upload:hover { border-color: var(--ink); }
+  .upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload__icon { width: 40px; height: 40px; border-radius: 10px; background: var(--peach); display: grid; place-items: center; flex: none; }
+  .world-water .upload__icon { background: var(--blue); color: #fff; }
+  .upload__text { display: flex; flex-direction: column; font-size: 0.95rem; line-height: 1.3; }
+  .upload__text span { color: var(--ink-3); font-size: 0.82rem; }
+  .upload__thumbs { display: flex; margin-left: auto; }
+  .upload__thumbs :global(img), .upload__thumbs :global(.thumb-pdf) { width: 36px; height: 36px; object-fit: cover; border-radius: 8px; border: 2px solid #fff; margin-left: -10px; background: var(--grey); font-size: 0.6rem; font-weight: 700; display: grid; place-items: center; }
+  .consent { position: relative; display: flex; gap: 12px; align-items: flex-start; font-size: 0.85rem; color: var(--ink-2); line-height: 1.45; cursor: pointer; padding-top: 4px; }
+  .consent input { position: absolute; opacity: 0; }
+  .consent__box { flex: none; width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--ink); display: grid; place-items: center; color: transparent; transition: all 0.2s; }
+  .consent input:checked + .consent__box { background: var(--ink); color: #fff; }
+  .world-water .consent input:checked + .consent__box { background: var(--blue); border-color: var(--blue); }
+  .consent input:focus-visible + .consent__box { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .consent.is-invalid .consent__box { border-color: #d4380d; }
+  .funnel__error { margin-top: 12px; font-size: 0.88rem; font-weight: 600; color: #d4380d; }
+  .funnel__submit { margin-top: 18px; }
+  .funnel__submit.is-loading { pointer-events: none; opacity: 0.6; }
+  .funnel__promise { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: 0.85rem; font-weight: 600; color: var(--ink-2); }
+  .funnel__tip { margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--peach-soft); font-size: 0.92rem; animation: stepIn 0.5s var(--ease-out); }
+  .world-water .funnel__tip { background: var(--blue-soft); color: var(--navy); }
+
+  .fdone { text-align: center; padding: 20px 0 8px; animation: stepIn 0.5s var(--ease-out); }
+  .fdone__check { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px; background: var(--peach); }
+  .world-water .fdone__check { background: var(--blue); color: #fff; }
+  .fdone__check :global(svg) { stroke-width: 2.4; stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw 0.7s 0.2s var(--ease-out) forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .fdone__mail { margin-top: 16px; display: grid; gap: 10px; }
+  @media (max-width: 520px) {
+    .fields { grid-template-columns: 1fr; } .field { grid-column: 1 / -1; }
+    .fstep--tiles .opt { min-height: 128px; padding: 14px; }
+    .fstep--tiles .opt__label { font-size: 1.02rem; }
+  }
+</style>
+
+<script>
+  type Cond = Record<string, string[]>;
+
+  function nextWorkdayText() {
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    const day = now.getDay();
+    const names = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    if (day === 0 || day === 6) return 'Rückmeldung am Montag';
+    const next = day === 5 ? 'Montag' : names[day + 1];
+    return now.getHours() < 15 ? `Rückmeldung heute, spätestens ${next}` : `Rückmeldung spätestens ${next}`;
+  }
+
+  document.querySelectorAll<HTMLFormElement>('[data-funnel]').forEach((form) => {
+    const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
+    const bar = form.querySelector<HTMLElement>('[data-bar]')!;
+    const nowEl = form.querySelector<HTMLElement>('[data-step-now]')!;
+    const totalEl = form.querySelector<HTMLElement>('[data-step-total]')!;
+    const back = form.querySelector<HTMLButtonElement>('[data-back]')!;
+    const tip = form.querySelector<HTMLElement>('[data-tip]')!;
+    const done = form.querySelector<HTMLElement>('[data-done]')!;
+    const state: Record<string, string> = { branch: form.dataset.branch || '' };
+    const history: HTMLElement[] = [];
+    let current = steps[0];
+
+    form.querySelectorAll('[data-promise]').forEach((el) => (el.textContent = nextWorkdayText()));
+
+    const matches = (cond: Cond | null, positive: boolean) => {
+      if (!cond) return true;
+      const ok = Object.entries(cond).every(([k, vals]) => vals.includes(state[k] ?? ''));
+      return positive ? ok : !Object.entries(cond).some(([k, vals]) => vals.includes(state[k] ?? ''));
+    };
+    const visible = (s: HTMLElement) => {
+      const when = s.dataset.when ? JSON.parse(s.dataset.when) : null;
+      const unless = s.dataset.unless ? JSON.parse(s.dataset.unless) : null;
+      if (!matches(when, true) || !matches(unless, false)) return false;
+      if (s.hasAttribute('data-skip-if-set') && state[s.dataset.step!] && !history.includes(s) && current !== s) return false;
+      return true;
+    };
+    
+    function updateProgress() {
+      const seq = steps.filter((s) => (history.includes(s) || s === current || visible(s)) && s.dataset.kind !== 'info');
+      const idx = Math.max(0, seq.indexOf(current));
+      const est = parseInt(totalEl.dataset.initial || '1', 10);
+      const total = Math.max(state.branch ? seq.length : est, history.filter((h) => h.dataset.kind !== 'info').length + 1);
+      const isInfo = current.dataset.kind === 'info';
+      nowEl.textContent = String(isInfo ? history.filter((h) => h.dataset.kind !== 'info').length + 1 : idx + 1);
+      totalEl.textContent = String(total);
+      bar.style.width = `${((isInfo ? history.length : idx) / Math.max(1, total - 1)) * 100}%`;
+      back.hidden = history.length === 0;
+    }
+
+    function show(step: HTMLElement, dir: 'fwd' | 'back') {
+      current.hidden = true;
+      step.hidden = false;
+      step.classList.remove('is-entering', 'is-back');
+      void step.offsetWidth;
+      step.classList.add(dir === 'fwd' ? 'is-entering' : 'is-back');
+      current = step;
+      tip.hidden = true;
+      if (step.dataset.kind === 'contact') renderSummary(step);
+      updateProgress();
+      if (dir === 'fwd' && form.getBoundingClientRect().top < 0) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function next() {
+      const i = steps.indexOf(current);
+      const target = steps.slice(i + 1).find(visible);
+      if (!target) return;
+      history.push(current);
+      show(target, 'fwd');
+    }
+
+    back.addEventListener('click', () => {
+      const prev = history.pop();
+      if (prev) show(prev, 'back');
+    });
+
+    function renderSummary(step: HTMLElement) {
+      const box = step.querySelector<HTMLElement>('[data-summary]');
+      if (!box) return;
+      const chips: string[] = [];
+      steps.filter((s) => history.includes(s) || (s.hasAttribute('data-skip-if-set') && state[s.dataset.step!])).forEach((h) => {
+        if (h.dataset.kind === 'single' || h.dataset.kind === 'multi') {
+          h.querySelectorAll<HTMLInputElement>('input:checked').forEach((inp) => {
+            const label = inp.closest('.opt')?.querySelector('.opt__label')?.textContent?.trim();
+            if (label) chips.push(label);
+          });
+        }
+      });
+      box.innerHTML = chips.map((c) => `<span>${c.replace(/</g, '&lt;')}</span>`).join('');
+    }
+
+    form.addEventListener('change', (e) => {
+      const input = e.target as HTMLInputElement;
+      const step = input.closest<HTMLElement>('[data-step]');
+      if (!step || step !== current) return;
+      const id = step.dataset.step!;
+      if (step.dataset.kind === 'single' && input.type === 'radio') {
+        if (id === 'branch') {
+          // Changing the first answer resets everything downstream
+          for (const k of Object.keys(state)) delete state[k];
+          steps.slice(1).forEach((s) => s.querySelectorAll<HTMLInputElement>('input[type=radio], input[type=checkbox]:not([data-consent])').forEach((i) => (i.checked = false)));
+          state.branch = input.value;
+        }
+        state[id] = input.value;
+        if (input.dataset.set) {
+          const preset = JSON.parse(input.dataset.set) as Record<string, string>;
+          Object.assign(state, preset);
+          for (const [k, v] of Object.entries(preset)) {
+            form.querySelector(`[data-step="${k}"]`)?.querySelectorAll<HTMLInputElement>('input').forEach((i) => { if (v.split(', ').includes(i.value)) i.checked = true; });
+          }
+        }
+        (form.querySelector('[data-field="branch"]') as HTMLInputElement).value = state.branch;
+        form.dataset.branch = state.branch;
+        const tips = step.dataset.tips ? JSON.parse(step.dataset.tips) : {};
+        if (tips[input.value]) {
+          setTimeout(next, 260);
+          setTimeout(() => { tip.textContent = tips[input.value]; tip.hidden = false; }, 320);
+        } else {
+          setTimeout(next, 260);
+        }
+      }
+      if (step.dataset.kind === 'multi') {
+        const vals = Array.from(step.querySelectorAll<HTMLInputElement>('input:checked')).map((x) => x.value);
+        state[id] = vals.join(', ');
+        (step.querySelector('[data-next]') as HTMLButtonElement).disabled = vals.length === 0;
+      }
+      if (input.matches('[data-files]')) renderThumbs(input);
+    });
+
+    form.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('[data-next]');
+      if (btn && current.contains(btn)) { e.preventDefault(); next(); }
+    });
+
+    function renderThumbs(input: HTMLInputElement) {
+      const box = input.closest('.upload')!.querySelector<HTMLElement>('[data-thumbs]')!;
+      box.innerHTML = '';
+      const files = Array.from(input.files || []).slice(0, 6);
+      files.forEach((f) => {
+        if (f.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(f);
+          img.alt = '';
+          box.appendChild(img);
+        } else {
+          const d = document.createElement('span');
+          d.className = 'thumb-pdf';
+          d.textContent = 'PDF';
+          box.appendChild(d);
+        }
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const step = current;
+      const tel = step.querySelector<HTMLInputElement>('input[type="tel"]');
+      const consent = step.querySelector<HTMLInputElement>('[data-consent]');
+      const err = step.querySelector<HTMLElement>('[data-error]')!;
+      const telOk = !!tel && (tel.value.match(/\d/g) || []).length >= 6;
+      tel?.closest('.field')?.classList.toggle('is-invalid', !telOk);
+      consent?.closest('.consent')?.classList.toggle('is-invalid', !consent.checked);
+      if (!telOk || !consent?.checked) { err.hidden = false; (telOk ? consent : tel)?.focus(); return; }
+      err.hidden = true;
+
+      // Collect only what's on the chosen path
+      const lines: string[] = [];
+      const data = new FormData();
+      const branch = state.branch || form.dataset.flow || '';
+      data.append('Bereich', branch === 'wasser' ? 'Wasserschaden / Trocknung' : 'Malerarbeiten');
+      const preset = steps.filter((s) => !history.includes(s) && s !== step && s.hasAttribute('data-skip-if-set') && state[s.dataset.step!]);
+      const collected = steps.filter((s) => history.includes(s) || s === step || preset.includes(s));
+      collected.forEach((h) => {
+        const title = h.querySelector('legend')?.textContent?.trim() || '';
+        if (h.dataset.kind === 'single' || h.dataset.kind === 'multi') {
+          const vals = Array.from(h.querySelectorAll<HTMLInputElement>('input:checked')).map((i) => i.closest('.opt')?.querySelector('.opt__label')?.textContent?.trim() || i.value);
+          if (vals.length) { lines.push(`${title} ${vals.join(', ')}`); data.append(title, vals.join(', ')); }
+        }
+        if (h.dataset.kind === 'contact') {
+          h.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-label]').forEach((inp) => {
+            if (inp.value.trim()) { lines.push(`${inp.dataset.label}: ${inp.value.trim()}`); data.append(inp.dataset.label!, inp.value.trim()); }
+          });
+          const files = h.querySelector<HTMLInputElement>('[data-files]')?.files;
+          if (files) Array.from(files).slice(0, 6).forEach((f) => data.append('Fotos', f, f.name));
+        }
+      });
+
+      const submit = step.querySelector<HTMLElement>('[data-submit]')!;
+      submit.classList.add('is-loading');
+      const endpoint = form.dataset.endpoint;
+      const subject = `${branch === 'wasser' ? 'Wasserschaden' : 'Malerarbeiten'} – Anfrage über die Website`;
+      let mailFallback = !endpoint;
+
+      if (endpoint) {
+        try {
+          data.append('_subject', subject);
+          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error(String(res.status));
+        } catch {
+          mailFallback = true;
+        }
+      }
+
+      step.hidden = true;
+      done.hidden = false;
+      bar.style.width = '100%';
+      back.hidden = true;
+      nowEl.parentElement!.innerHTML = '<span>Erledigt</span>';
+      if (branch === 'wasser') {
+        form.querySelector('[data-done-text]')!.textContent = 'Wir rufen Sie zurück. Läuft das Wasser noch, schließen Sie bitte den Haupthahn und rufen Sie uns direkt an.';
+      }
+      if (mailFallback) {
+        const body = `${lines.join('\n')}\n\n(Fotos bitte an diese E-Mail anhängen.)`;
+        const href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const fb = form.querySelector<HTMLElement>('[data-mail-fallback]')!;
+        fb.hidden = false;
+        fb.querySelector<HTMLAnchorElement>('[data-mail-link]')!.href = href;
+        form.querySelector('[data-done-title]')!.textContent = 'Fast fertig. Bitte noch absenden.';
+        form.querySelector('[data-done-text]')!.textContent = 'Wir haben Ihre Angaben in eine E-Mail übernommen. Bitte dort auf Senden tippen.';
+        window.location.href = href;
+      }
+    });
+
+    updateProgress();
+  });
+</script>

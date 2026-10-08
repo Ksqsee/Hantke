@@ -1,0 +1,74 @@
+---
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import EmergencyBar from '../components/EmergencyBar.astro';
+import { company } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  world?: 'warm' | 'water';
+  overHero?: boolean;
+  emergencyBar?: boolean;
+  noindex?: boolean;
+}
+const { title, description, world = 'warm', overHero = false, emergencyBar = world === 'warm', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['HousePainter', 'LocalBusiness'],
+  name: company.name,
+  alternateName: ['Maler Hantke', 'Hantke Bautrocknung'],
+  url: 'https://www.maler-hantke.de',
+  telephone: '+49 40 879 31 31',
+  email: company.email,
+  foundingDate: String(company.founded),
+  address: { '@type': 'PostalAddress', streetAddress: company.street, postalCode: company.zip, addressLocality: company.city, addressCountry: 'DE' },
+  areaServed: 'Hamburg',
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: '5.0', bestRating: '5' },
+};
+---
+<!doctype html>
+<html lang="de" class:list={[world === 'water' ? 'world-water' : 'world-warm']}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/img/eppendorf-altbau-1600.webp', Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class:list={[world === 'water' ? 'world-water' : 'world-warm']}>
+    <a href="#main" class="skip">Zum Inhalt springen</a>
+    {emergencyBar && <EmergencyBar />}
+    <Nav world={world} overHero={overHero} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar world={world} />
+    <script>
+      import '../scripts/motion.ts';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* When the emergency bar is shown, the fixed nav sits below it until scrolling starts */
+  body:has(.ebar) .nav { top: 40px; transition: transform 0.6s var(--ease-out), background-color 0.4s, color 0.4s, box-shadow 0.4s, top 0.4s var(--ease-out); }
+  body:has(.ebar) .nav.is-solid { top: 0; }
+</style>

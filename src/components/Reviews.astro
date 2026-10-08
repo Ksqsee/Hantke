@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import { reviews } from '../data/site';
+---
+<section class="section reviews">
+  <div class="wrap">
+    <div class="reviews__head">
+      <div class="reviews__score" data-reveal>
+        <span class="reviews__num tnum" data-count="5.0" data-from="0.0">5,0</span>
+        <div>
+          <div class="reviews__stars" aria-label="5 von 5 Sternen">
+            {[0, 1, 2, 3, 4].map((i) => <Icon name="star" size={18} />)}
+          </div>
+          <p class="mono">Alle Bewertungen auf {reviews.source}: 5 Sterne</p>
+        </div>
+      </div>
+      <h2 class="h2" data-split>Sauber gearbeitet, fair angeboten, <em>pünktlich</em> fertig.</h2>
+    </div>
+    <div class="reviews__grid">
+      {reviews.items.map((r, i) => (
+        <figure class="review" data-reveal style={`--d:${i * 0.1}s`}>
+          <blockquote>„{r.quote}“</blockquote>
+          <figcaption>
+            <span class="review__avatar" aria-hidden="true">{r.name.charAt(0)}</span>
+            <span><strong>{r.name}</strong><span class="mono">{r.context}</span></span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <a href={reviews.url} class="link reviews__more" target="_blank" rel="noopener">Alle Bewertungen auf Google <Icon name="arrow-up-right" size={16} /></a>
+  </div>
+</section>
+
+<style>
+  .reviews__head { display: grid; grid-template-columns: auto 1fr; gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(40px, 5vw, 72px); }
+  .reviews__score { display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 22px; background: var(--peach); color: var(--ink); }
+  .reviews__num { font-weight: 800; font-size: clamp(4.5rem, 8vw, 7rem); line-height: 0.82; letter-spacing: -0.06em; }
+  .reviews__stars { display: flex; gap: 2px; margin-bottom: 6px; }
+  .reviews__stars :global(svg) { fill: currentColor; }
+  .reviews__score .mono { font-size: 0.9rem; max-width: 18ch; }
+  .reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .review { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: clamp(24px, 3vw, 36px); border-radius: 22px; background: var(--grey); min-height: 300px; }
+  .review:nth-child(2) { background: var(--ink); color: #fff; --muted: rgba(255,255,255,.7); }
+  .review blockquote { font-weight: 750; font-size: var(--step-2); line-height: 1.15; letter-spacing: -0.035em; text-wrap: pretty; }
+  .review figcaption { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; }
+  .review figcaption > span:last-child { display: flex; flex-direction: column; }
+  .review figcaption .mono { color: var(--muted); font-size: 0.85rem; font-weight: 500; }
+  .review__avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--peach); color: var(--ink); display: grid; place-items: center; font-weight: 800; }
+  .world-water .review__avatar { background: var(--blue); color: #fff; }
+  .reviews__more { margin-top: 32px; }
+  @media (max-width: 900px) { .reviews__head { grid-template-columns: 1fr; } .reviews__score { width: fit-content; } .reviews__grid { grid-template-columns: 1fr; } .review { min-height: 0; } }
+</style>

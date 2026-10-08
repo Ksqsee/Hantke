@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/Legal.astro';
+import { company } from '../data/site';
+const sections = [
+  { h: 'Angaben gemäß § 5 DDG', p: [`${company.name} — ${company.claim}<br />${company.street}<br />${company.zip} ${company.city}<br />Deutschland`] },
+  { h: 'Vertreten durch', p: [`Geschäftsführer: ${company.ceo}`] },
+  { h: 'Kontakt', p: [`Telefon: <a href="tel:+49408793131">+49 40 879 31 31</a><br />E-Mail: <a href="mailto:${company.email}">${company.email}</a><br />Internet: https://www.maler-hantke.de`] },
+  { h: 'Registereintrag', p: [`Eintragung im Handelsregister<br />Registergericht: ${company.court}<br />Registernummer: ${company.hrb}`] },
+  { h: 'Umsatzsteuer-Identifikationsnummer', p: [`Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: ${company.vatId}`] },
+  { h: 'Berufsbezeichnung und zuständige Kammer', p: [`Berufsbezeichnung: Maler und Lackierer<br />Verliehen in: Bundesrepublik Deutschland<br />Zuständige Kammer: Handwerkskammer Hamburg, Holstenwall 12, 20355 Hamburg<br />Betriebsnummer der Handwerkskammer: ${company.hwkNumber}<br /><a href="https://www.hwk-hamburg.de" rel="noopener">www.hwk-hamburg.de</a>`] },
+  { h: 'Berufsrechtliche Regelungen', p: ['Es gelten die Handwerksordnung (HwO) sowie die Verordnung über das Berufsbild und die Prüfungsanforderungen im Maler- und Lackiererhandwerk. Beide Regelwerke sind einsehbar unter <a href="https://www.gesetze-im-internet.de" rel="noopener">www.gesetze-im-internet.de</a>.'] },
+  { h: 'Verbraucherstreitbeilegung', p: ['Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.'] },
+  { h: 'Verantwortlich für den Inhalt', p: [`${company.ceo}<br />${company.name}<br />${company.street}, ${company.zip} ${company.city}`] },
+  { h: 'Haftung für Inhalte', p: ['Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.', 'Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben davon unberührt. Eine Haftung ist erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen entfernen wir diese Inhalte umgehend.'] },
+  { h: 'Haftung für Links', p: ['Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich.', 'Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft; rechtswidrige Inhalte waren nicht erkennbar. Eine dauerhafte inhaltliche Kontrolle ohne konkrete Anhaltspunkte einer Rechtsverletzung ist nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen entfernen wir solche Links umgehend.'] },
+  { h: 'Urheberrecht und Bildnachweise', p: ['Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Fotos Dritter sind mit Urheber und Lizenz gekennzeichnet, die vollständige Liste steht unter <a href="/bildnachweise">Bildnachweise</a>.'] },
+];
+---
+<Base title="Impressum — Tomas Hantke Malermeister GmbH, Hamburg" description="Impressum der Tomas Hantke Malermeister GmbH, Bötelkamp 31, 22529 Hamburg." noindex>
+  <Legal title="Impressum" intro="Anbieterkennzeichnung nach § 5 Digitale-Dienste-Gesetz." stand="31. Juli 2026" sections={sections} />
+</Base>

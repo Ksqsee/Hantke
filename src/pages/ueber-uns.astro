@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Promises from '../components/Promises.astro';
+import Process from '../components/Process.astro';
+import AreaCheck from '../components/AreaCheck.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import { company, phones } from '../data/site';
+import { processSteps } from '../data/content';
+
+const ways = [
+  { title: 'Erst schauen, dann anbieten.', text: 'Wir sehen uns die Räume an, bevor wir eine Zahl nennen. Ein Angebot ohne Ortstermin ist eine Schätzung.' },
+  { title: 'Der Schutz kommt vor der Farbe.', text: 'Folie und Malervlies auf dem Boden, Leisten und Rahmen abgeklebt. Damit Sie nach uns nicht putzen müssen.' },
+  { title: 'Feuchtigkeit zuerst.', text: 'Auf eine feuchte Wand gehört keine Farbe. Dafür haben wir einen eigenen Geschäftsbereich.' },
+  { title: 'Abnahme im Stehen.', text: 'Gemeinsamer Rundgang. Was auffällt, wird notiert und behoben, bevor die Rechnung kommt.' },
+];
+const services = ['Wände und Decken', 'Tapezierarbeiten', 'Spachtel- und Glätttechnik', 'Strukturputz', 'Fassadenanstrich', 'Lackierarbeiten', 'Bodenverlegung', 'Plissees und Sonnenschutz', 'Küchenmontage', 'Trocknung nach Wasserschaden'];
+---
+<Base title="Über uns — Maler Hantke, Malermeisterbetrieb in Hamburg-Lokstedt" description="Tomas Hantke Malermeister GmbH, Bötelkamp 31 in Hamburg-Lokstedt. Meisterbetrieb seit 2002, ohne wechselnde Subunternehmer. Ein fester Ansprechpartner vom Angebot bis zur Abnahme.">
+  <PageHead
+    eyebrow="Über uns"
+    title="Wir sind der Betrieb, der am Ende selbst auf der Baustelle <em>steht.</em>"
+    lead={`${company.name}, ${company.street} in Hamburg-Lokstedt. Malerarbeiten, Oberflächen, Fassaden und die Trocknung nach einem Wasserschaden: geplant, ausgeführt und abgenommen von denselben Leuten.`}
+  />
+
+  <section class="wrap">
+    <div class="about-media media media--parallax" data-parallax="8" data-reveal="fade">
+      <Img name="lokstedt-backstein" alt="Backsteinhaus in Hamburg-Lokstedt" sizes="100vw" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="proof-head">
+        <p class="eyebrow" data-reveal>Nachprüfbar</p>
+        <h2 class="h2" data-split>Kein Vermittlungsportal. Keine <em>Subunternehmerkette.</em></h2>
+      </div>
+      <div class="proof-grid">
+        <div class="ptile ptile--peach" data-reveal>
+          <p class="ptile__k">Seit</p>
+          <p class="ptile__v tnum" data-count="2002" data-from="1980">2002</p>
+          <p class="ptile__t">Im Handelsregister eingetragen, {company.court}, {company.hrb}.</p>
+        </div>
+        <div class="ptile ptile--ink" data-reveal style="--d:.06s">
+          <p class="ptile__k">Meisterbetrieb</p>
+          <p class="ptile__v">HWK</p>
+          <p class="ptile__t">Handwerkskammer Hamburg, Betriebsnummer {company.hwkNumber}.</p>
+        </div>
+        <div class="ptile ptile--blue" data-reveal style="--d:.12s">
+          <p class="ptile__k">Werkstatt</p>
+          <p class="ptile__v">Lokstedt</p>
+          <p class="ptile__t">{company.street}, eigene Werkstatt, kein Büro auf dem Papier.</p>
+        </div>
+      </div>
+      <a href="/impressum" class="link proof-link" data-reveal>Alle Pflichtangaben im Impressum <Icon name="arrow" size={16} /></a>
+    </div>
+  </section>
+
+  <section class="section surface-grey">
+    <div class="wrap duo">
+      <div class="duo__item" data-reveal>
+        <p class="eyebrow">Selbstverständnis</p>
+        <h2 class="h2">Von Einfach bis <em>Edel.</em></h2>
+        <p class="body">Der Zusatz steht seit der Gründung im Firmennamen und meint genau das: Wir machen die schnelle Renovierung einer Mietwohnung genauso wie die Spachteltechnik im Altbau. Was zur Wohnung, zum Budget und zum gewünschten Ergebnis passt, besprechen wir vorher. Nicht danach.</p>
+      </div>
+      <div class="duo__item" data-reveal style="--d:.08s">
+        <p class="eyebrow">Alles aus einer Hand</p>
+        <h2 class="h2">Eine Firma statt <em class="hl-blue">drei.</em></h2>
+        <p class="body">Maler, Tapezierer, Lackierer, Fassade, Plissees, Küchenmontage und die technische Trocknung nach einem Wasserschaden kommen aus demselben Betrieb. Das erspart Ihnen die Koordination zwischen drei Firmen. Und uns die Diskussion, wer für welchen Schaden zuständig ist.</p>
+        <ul class="chips">{services.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap contact-person">
+      <div class="cp__card" data-reveal>
+        <div class="cp__avatar" aria-hidden="true">FQ</div>
+        <p class="cp__name">{company.manager}</p>
+        <p class="cp__role">Betriebsleiter</p>
+        <dl class="cp__facts">
+          <div><dt>Zuständig für</dt><dd>Organisation, Planung und Qualität</dd></div>
+          <div><dt>Im Projekt</dt><dd>Aufmaß, Terminplanung, Bauleitung, Abnahme</dd></div>
+        </dl>
+        <a href={phones.maler.href} class="btn btn--block"><Icon name="phone" class="btn__icon" /> {phones.maler.display}</a>
+      </div>
+      <div class="cp__copy">
+        <p class="eyebrow" data-reveal>Ansprechpartner</p>
+        <h2 class="h2" data-split>Kein Callcenter. Kein wechselnder <em>Bearbeiter.</em></h2>
+        <p class="body" data-reveal>Er nimmt auf, plant die Abläufe, koordiniert die Baustellen und ist bei der Abnahme dabei. Wenn Sie eine Rückfrage zum Angebot oder zum Termin haben, ist er der Ansprechpartner.</p>
+        <p class="body" data-reveal>Zwei bis drei Leute pro Baustelle, ein Meister als fester Ansprechpartner. Wer Montag anfängt, ist auch bei der Abnahme dabei. Ausgebildet wird im eigenen Betrieb.</p>
+      </div>
+    </div>
+  </section>
+
+  <Promises eyebrow="Wie wir arbeiten" title="Vier Punkte, an denen wir uns <em>messen</em> lassen." items={ways} />
+
+  <Process eyebrow="Zusammenarbeit" title="Von der Anfrage bis zur <em>Abnahme.</em>" steps={processSteps} />
+
+  <AreaCheck />
+
+  <CtaFinal flow="start" title="Erzählen Sie uns, was <em>ansteht.</em>" text="Ein Satz zum Objekt und zum Anliegen reicht für den Anfang. Alles Weitere klären wir am Telefon oder beim Ortstermin." />
+</Base>
+
+<style>
+  .about-media { aspect-ratio: 21 / 9; }
+  .proof-head { display: grid; gap: 20px; margin-bottom: clamp(32px, 4vw, 56px); }
+  .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ptile { padding: 26px; border-radius: 24px; display: grid; gap: 8px; min-height: 300px; align-content: start; }
+  .ptile--peach { background: var(--peach); }
+  .ptile--ink { background: var(--ink); color: #fff; }
+  .ptile--blue { background: var(--blue); color: #fff; }
+  .ptile__k { font-weight: 700; opacity: 0.75; }
+  .ptile__v { font-weight: 800; font-size: clamp(3rem, 6vw, 5.6rem); letter-spacing: -0.06em; line-height: 0.9; }
+  .ptile__t { margin-top: auto; font-weight: 550; opacity: 0.85; }
+  .proof-link { margin-top: 24px; }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); }
+  .duo__item { display: grid; gap: 20px; align-content: start; }
+  .duo__item .h2 { --hl: var(--peach); }
+  .duo__item .h2 em { background-size: 100% 88%; }
+  .duo__item .hl-blue { color: #fff; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips li { padding: 7px 13px; border-radius: 999px; background: #fff; font-weight: 600; font-size: 0.92rem; }
+  .contact-person { display: grid; grid-template-columns: 4fr 7fr; gap: clamp(32px, 6vw, 110px); align-items: center; }
+  .cp__card { padding: 28px; border-radius: 26px; background: var(--peach); display: grid; gap: 6px; }
+  .cp__avatar { width: 96px; height: 96px; border-radius: 50%; background: var(--ink); color: var(--peach); display: grid; place-items: center; font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; margin-bottom: 18px; }
+  .cp__name { font-size: var(--step-3); font-weight: 800; letter-spacing: -0.045em; line-height: 1; }
+  .cp__role { font-weight: 650; opacity: 0.7; }
+  .cp__facts { display: grid; gap: 12px; margin: 20px 0; }
+  .cp__facts dt { font-size: 0.85rem; font-weight: 700; opacity: 0.65; }
+  .cp__facts dd { font-weight: 650; }
+  .cp__copy { display: grid; gap: 20px; }
+  @media (max-width: 900px) {
+    .proof-grid, .duo, .contact-person { grid-template-columns: 1fr; }
+    .ptile { min-height: 220px; }
+    .about-media { aspect-ratio: 4 / 3; }
+  }
+</style>
